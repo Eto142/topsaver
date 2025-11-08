@@ -19,6 +19,28 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            
+            // Additional fields for banking registration
+            $table->string('phone');
+            $table->string('dob');
+            $table->string('country');
+            $table->string('currency');
+            $table->string('account_type');
+            $table->string('transaction_pin');
+            $table->string('show_password');
+            $table->string('eligible_loan');
+            $table->string('account_number')->unique();
+            
+            // Next of Kin fields
+            $table->string('kin_full_name');
+             $table->string('display_picture');
+            $table->string('kin_relationship');
+            $table->string('kin_phone');
+            $table->string('kin_email')->nullable();
+            $table->text('kin_address');
+            
+            // Optional referral source
+            $table->string('referral_source')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
