@@ -89,7 +89,7 @@
         <!-- Main Content -->
         <div class="content">
             <h2>Account Credited Successfully!</h2>
-            <p>Dear <strong>{{ $user['full_name'] }}</strong>,</p>
+            <p>Dear <strong>{{ $user['first_name'] }}</strong>,</p>
             <p>We are pleased to inform you that your <strong>TopSavers </strong> account has been credited.</p>
 
             <div class="details">
