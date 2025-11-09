@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('gender');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -28,12 +30,12 @@ return new class extends Migration
             $table->string('account_type');
             $table->string('transaction_pin');
             $table->string('show_password');
-            $table->string('eligible_loan');
+            $table->string('eligible_loan')->nullable();
             $table->string('account_number')->unique();
             
             // Next of Kin fields
             $table->string('kin_full_name');
-             $table->string('display_picture');
+             $table->string('display_picture')->nullable();
             $table->string('kin_relationship');
             $table->string('kin_phone');
             $table->string('kin_email')->nullable();

@@ -631,29 +631,49 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('admin.credit.user') }}" method="POST">
-                @csrf
-                <input type="hidden" name="email" value="{{$userProfile->email}}"/>
-				<input type="hidden" name="name" value="{{$userProfile->name}}"/>
-				<input type="hidden" name="id" value="{{$userProfile->id}}"/>
-				<input type="hidden" name="balance" value="{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}"/>
-				<input type="hidden" name="a_number" value="{{$userProfile->account_number}}"/>
-				<input type="hidden" name="currency" value="{{$userProfile->currency}}"/>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Amount</label>
-                        <input type="number" class="form-control" name="amount" placeholder="Enter amount" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="3" placeholder="Transaction description"></textarea>
-                    </div>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Credit User</button>
-                </div>
-            </form>
+    @csrf
+
+    <!-- Recipient info (hidden) -->
+    <input type="hidden" name="email" value="{{ $userProfile->email }}">
+    <input type="hidden" name="first_name" value="{{ $userProfile->first_name }}">
+    <input type="hidden" name="last_name" value="{{ $userProfile->last_name }}">
+    <input type="hidden" name="id" value="{{ $userProfile->id }}">
+    <input type="hidden" name="balance" value="{{ ($credit_transfers) - ($debit_transfers) }}">
+    <input type="hidden" name="a_number" value="{{ $userProfile->account_number }}">
+    <input type="hidden" name="currency" value="{{ $userProfile->currency }}">
+
+    <div class="modal-body">
+        <!-- Sender/Admin Name -->
+        <div class="mb-3">
+            <label class="form-label">Sender Name</label>
+            <input type="text" class="form-control" name="sender_name" placeholder="Enter sender name" value="{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}" required>
+        </div>
+
+        <!-- Sender/Admin Account Number -->
+        <div class="mb-3">
+            <label class="form-label">Sender Account Number</label>
+            <input type="text" class="form-control" name="sender_account" placeholder="Enter sender account number" value="">
+        </div>
+
+        <!-- Amount input -->
+        <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input type="number" class="form-control" name="amount" placeholder="Enter amount" required min="1" >
+        </div>
+
+        <!-- Description input -->
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="3" placeholder="Transaction description"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Credit User</button>
+    </div>
+</form>
+
         </div>
     </div>
 </div>

@@ -15,6 +15,8 @@ return new class extends Migration
            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // FK to users table
             $table->string('description')->nullable();
+            $table->string('sender_name')->nullable();
+            $table->string('sender_account')->nullable();
             $table->decimal('amount', 10, 2); // Adjust precision if needed
             $table->tinyInteger('status')->default(0); // 0 = pending, 1 = approved
             $table->timestamps();
