@@ -444,19 +444,20 @@
 
           <div class="col-md-6 mb-4">
             <label class="form-label">Account Name <span class="text-danger">*</span></label>
-            <input name="account_name" type="text" class="form-control" required placeholder="John Doe">
+            <input name="account_name" type="text" class="form-control" required placeholder="Enter Account Name">
             <div class="invalid-feedback">Please enter the account name.</div>
           </div>
 
           <div class="col-md-6 mb-4">
             <label class="form-label">Account Number <span class="text-danger">*</span></label>
-            <input name="account_number" type="text" inputmode="numeric" pattern="\d*" class="form-control" required placeholder="1234567890">
+            <input name="account_number" type="text" inputmode="numeric" pattern="\d*" class="form-control" required placeholder="Enter Account Number">
             <div class="invalid-feedback">Please enter a valid account number.</div>
           </div>
 
           <div class="col-md-6 mb-4">
             <label class="form-label">Bank Name <span class="text-danger">*</span></label>
-            <input name="bank_name" type="text" class="form-control" required placeholder="Example Bank">
+            <input name="bank_name" type="text" class="form-control" required placeholder="
+            Enter Bank Name">
             <div class="invalid-feedback">Please enter the bank name.</div>
           </div>
 
