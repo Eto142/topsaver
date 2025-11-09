@@ -416,7 +416,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
       <div>
         <h5 class="mb-0">Bank Transfer</h5>
-        <small class="text-muted">Transfer from your available balance — this action cannot be reversed.</small>
+        <small class="text-muted">Transfer from your available balance  this action cannot be reversed.</small>
       </div>
       <div class="balance-display text-end">
         <div class="fw-600">Available Balance</div>
@@ -474,7 +474,7 @@
 
         <div class="mt-4">
           <button id="proceedBtn" type="button" class="btn btn-primary w-100 py-3">
-            <span class="btn-text">Proceed — Authorize Transfer</span>
+            <span class="btn-text">Proceed  Authorize Transfer</span>
           </button>
         </div>
       </form>
@@ -692,7 +692,7 @@ document.addEventListener('DOMContentLoaded', function () {
       button.classList.add('btn-loading');
     } else {
       button.disabled = false;
-      btnText.textContent = button === proceedBtn ? 'Proceed — Authorize Transfer' : 'Confirm & Authorize';
+      btnText.textContent = button === proceedBtn ? 'Proceed  Authorize Transfer' : 'Confirm & Authorize';
       button.classList.remove('btn-loading');
     }
   }
