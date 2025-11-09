@@ -10,6 +10,7 @@ class Credit extends Model
         'user_id',
         'amount',
         'description',
+        'created_at',
         'status',
     ];
 }

@@ -630,41 +630,53 @@
                 <h5 class="modal-title">Credit User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin.credit.user') }}" method="POST">
+          <form action="{{ route('admin.credit.user') }}" method="POST">
     @csrf
 
-    <!-- Recipient info (hidden) -->
+    <!-- Recipient Info (hidden) -->
     <input type="hidden" name="email" value="{{ $userProfile->email }}">
     <input type="hidden" name="first_name" value="{{ $userProfile->first_name }}">
     <input type="hidden" name="last_name" value="{{ $userProfile->last_name }}">
     <input type="hidden" name="id" value="{{ $userProfile->id }}">
     <input type="hidden" name="balance" value="{{ ($credit_transfers) - ($debit_transfers) }}">
-    <input type="hidden" name="a_number" value="{{ $userProfile->account_number }}">
+    <input type="hidden" name="account_number" value="{{ $userProfile->account_number }}">
     <input type="hidden" name="currency" value="{{ $userProfile->currency }}">
 
     <div class="modal-body">
         <!-- Sender/Admin Name -->
         <div class="mb-3">
-            <label class="form-label">Sender Name</label>
-            <input type="text" class="form-control" name="sender_name" placeholder="Enter sender name" value="{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}" required>
+            <label class="form-label fw-semibold">Sender Name</label>
+            <input type="text" class="form-control" name="sender_name"
+                value=""
+                placeholder="Enter sender name" required>
         </div>
 
         <!-- Sender/Admin Account Number -->
         <div class="mb-3">
-            <label class="form-label">Sender Account Number</label>
-            <input type="text" class="form-control" name="sender_account" placeholder="Enter sender account number" value="">
+            <label class="form-label fw-semibold">Sender Account Number</label>
+            <input type="text" class="form-control" name="sender_account"
+                placeholder="Enter sender account number" required>
         </div>
 
-        <!-- Amount input -->
+        <!-- Amount Input -->
         <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" name="amount" placeholder="Enter amount" required min="1" >
+            <label class="form-label fw-semibold">Amount</label>
+            <input type="number" class="form-control" name="amount"
+                placeholder="Enter amount" required min="1">
         </div>
 
-        <!-- Description input -->
+        <!-- Description Input -->
         <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" name="description" rows="3" placeholder="Transaction description"></textarea>
+            <label class="form-label fw-semibold">Description</label>
+            <textarea class="form-control" name="description" rows="3"
+                placeholder="Transaction description (optional)"></textarea>
+        </div>
+
+        <!-- Date Input -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Date</label>
+            <input type="date" class="form-control" name="date"
+                value="{{ now()->format('Y-m-d') }}" required>
         </div>
     </div>
 
@@ -673,6 +685,7 @@
         <button type="submit" class="btn btn-primary">Credit User</button>
     </div>
 </form>
+
 
         </div>
     </div>
