@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class credit extends Model
+class Credit extends Model
 {
     //
 }

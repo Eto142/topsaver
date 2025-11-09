@@ -9,6 +9,7 @@ use App\Models\Credit;
 use App\Models\Debit;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use App\Mail\CreditEmail;
 use Illuminate\Http\Request;
 
 class CreditDebitController extends Controller
@@ -85,6 +86,56 @@ class CreditDebitController extends Controller
 // }
 
 
+// public function creditUser(Request $request)
+// {
+//     $ref = rand(12344994, 76503737);
+
+//     $credit = new Credit;
+//     $credit->user_id = $request->id;
+//     $credit->amount = (float) $request->amount;
+//     $credit->description = $request->description;
+//     $credit->status = 1;
+//     $credit->save();
+
+//     $transaction = new Transaction;
+//     $transaction->user_id = $request->id;
+//     $transaction->transaction_id = $credit->id;
+//     $transaction->transaction_ref = "CD" . $ref;
+//     $transaction->transaction_type = "Credit";
+//     $transaction->transaction = "Credit";
+//     $transaction->transaction_amount = (float) $request->amount;
+//     $transaction->transaction_description = "Credit transaction";
+//     $transaction->transaction_status = 1;
+//     $transaction->save();
+
+//     $full_name = $request->name;
+//     $email = $request->email;
+//     $amount = (float) $request->amount;
+//     $date = Carbon::now();
+//     $balance = (float) $request->balance + $amount;
+//     $description = $request->description;
+//     $a_number = $request->a_number;
+//     $currency = $request->currency;
+
+//     $user = [
+//         'account_number' => $a_number,
+//         'account_name' => $full_name,
+//         'full_name' => $full_name,
+//         'description' => $description,
+//         'amount' => $amount,
+//         'date' => $date,
+//         'balance' => $balance,
+//         'currency' => $currency,
+//         'ref' => "CD" . $ref,
+//     ];
+
+//     Mail::to($email)->send(new CreditEmail($user));
+
+//     return back()->with('status', 'User account credited successfully');
+// }
+
+
+
 public function creditUser(Request $request)
 {
     $ref = rand(12344994, 76503737);
@@ -107,31 +158,22 @@ public function creditUser(Request $request)
     $transaction->transaction_status = 1;
     $transaction->save();
 
-    $full_name = $request->name;
-    $email = $request->email;
-    $amount = (float) $request->amount;
-    $date = Carbon::now();
-    $balance = (float) $request->balance + $amount;
-    $description = $request->description;
-    $a_number = $request->a_number;
-    $currency = $request->currency;
-
     $user = [
-        'account_number' => $a_number,
-        'account_name' => $full_name,
-        'full_name' => $full_name,
-        'description' => $description,
-        'amount' => $amount,
-        'date' => $date,
-        'balance' => $balance,
-        'currency' => $currency,
+        'account_number' => $request->a_number,
+        'full_name' => $request->name,
+        'description' => $request->description,
+        'amount' => (float) $request->amount,
+        'date' => Carbon::now(),
+        'balance' => (float) $request->balance + (float) $request->amount,
+        'currency' => $request->currency,
         'ref' => "CD" . $ref,
     ];
 
-    // Mail::to($email)->send(new CreditEmail($user));
+    Mail::to($request->email)->send(new CreditEmail($user));
 
     return back()->with('status', 'User account credited successfully');
 }
+
 
 
 public function debitUser(Request $request)
@@ -184,7 +226,7 @@ public function debitUser(Request $request)
         'ref' => "DB" . $ref,
     ];
 
-    // Mail::to($email)->send(new DebitEmail($user));
+    Mail::to($email)->send(new DebitEmail($user));
 
     return back()->with('status', 'User account debited successfully');
 }
