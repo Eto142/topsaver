@@ -58,7 +58,7 @@
         </div>
         <div class="content">
             <h2>Login Alert</h2>
-            <p>Dear <strong>{{ $user-first_name }}</strong>,</p>
+            <p>Dear <strong>{{ $user->first_name }}</strong>,</p>
             <p>Your account just logged in successfully to <strong>TopSavers Bank</strong>.</p>
 
             <div class="details">
