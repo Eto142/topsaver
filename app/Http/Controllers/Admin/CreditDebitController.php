@@ -140,6 +140,7 @@ public function creditUser(Request $request)
 {
     $ref = rand(12344994, 76503737);
 
+    // Create credit record
     $credit = new Credit;
     $credit->user_id = $request->id;
     $credit->amount = (float) $request->amount;
@@ -147,6 +148,7 @@ public function creditUser(Request $request)
     $credit->status = 1;
     $credit->save();
 
+    // Create transaction record
     $transaction = new Transaction;
     $transaction->user_id = $request->id;
     $transaction->transaction_id = $credit->id;
@@ -158,9 +160,10 @@ public function creditUser(Request $request)
     $transaction->transaction_status = 1;
     $transaction->save();
 
+    // Get user full name from first_name and last_name
     $user = [
-        'account_number' => $request->a_number,
-        'full_name' => $request->name,
+        'account_number' => $request->account_number,
+        'full_name' => $request->first_name . ' ' . $request->last_name, // combine first & last name
         'description' => $request->description,
         'amount' => (float) $request->amount,
         'date' => Carbon::now(),
@@ -169,6 +172,7 @@ public function creditUser(Request $request)
         'ref' => "CD" . $ref,
     ];
 
+    // Send credit notification email
     Mail::to($request->email)->send(new CreditEmail($user));
 
     return back()->with('status', 'User account credited successfully');
