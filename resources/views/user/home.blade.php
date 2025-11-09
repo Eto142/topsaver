@@ -159,7 +159,7 @@
                                 </div>
                                 <div class="action-label">Deposit</div>
                             </a>
-                            <a href="{{route('user.bank')}}" class="quick-action">
+                            <a href="{{route('user.transfer.bank')}}" class="quick-action">
                                 <div class="action-icon">
                                     <i class="fas fa-exchange-alt"></i>
                                 </div>

@@ -10,13 +10,13 @@
         <li>
             <div class="link-item">
                 <i class="fas fa-exchange-alt"></i>
-                <a href="{{route('user.bank')}}">Transfer</a>
+                <a href="{{route('user.transfer.bank')}}">Transfer</a>
             </div>
         </li>
         <li>
             <div class="link-item">
                 <i class="fas fa-credit-card"></i>
-                <a href="{{route('user.card')}}">Cards</a>
+                <a href="{{route('user.cards.card')}}">Cards</a>
             </div>
         </li>
         <li>
@@ -25,12 +25,20 @@
                 <a href="{{route('user.transactions')}}">History</a>
             </div>
         </li>
-        <li>
-            <div class="link-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <a href="#">Logout</a>
-            </div>
-        </li>
+       <li>
+    <div class="link-item">
+        <i class="fas fa-sign-out-alt"></i>
+        <a href="{{ route('user.logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+           Logout
+        </a>
+
+        <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </div>
+</li>
+
     </ul>
 </div>
 

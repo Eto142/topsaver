@@ -62,7 +62,10 @@ class DashboardController extends Controller
 
      public function Alltransactions()
     {
-        return view('user.transactions'); // Load the dashboard view
+         $data['transaction'] = Transaction::where('user_id', Auth::user()->id)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+        return view('user.transactions', $data); // Load the dashboard view
     }
 
      public function Bills()

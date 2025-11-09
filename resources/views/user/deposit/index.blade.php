@@ -165,11 +165,34 @@
                     </svg>
                 </div>
                 <p class="mb-2 text-muted">Enter your 4-digit transaction PIN to authorize this deposit.</p>
-                <div id="pinGridDeposit" class="pin-grid" aria-label="Transaction PIN" style="display: flex; gap: 16px; justify-content: center; margin: 24px 0 8px;">
-                    <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-digit" aria-label="PIN digit 1" style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" />
-                    <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-digit" aria-label="PIN digit 2" style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" />
-                    <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-digit" aria-label="PIN digit 3" style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" />
-                    <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-digit" aria-label="PIN digit 4" style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" />
+                
+                <!-- Fixed PIN Input Container -->
+                <div class="pin-container mb-4">
+                    <div id="pinGridDeposit" class="pin-grid d-flex justify-content-center gap-3 my-4">
+                        <input type="text" maxlength="1" class="pin-digit" data-index="0" 
+                               style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" 
+                               oninput="handlePinInput(this)" onkeydown="handlePinKeydown(event, this)" 
+                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" 
+                               onblur="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff'">
+                        <input type="text" maxlength="1" class="pin-digit" data-index="1" 
+                               style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" 
+                               oninput="handlePinInput(this)" onkeydown="handlePinKeydown(event, this)" 
+                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" 
+                               onblur="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff'">
+                        <input type="text" maxlength="1" class="pin-digit" data-index="2" 
+                               style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" 
+                               oninput="handlePinInput(this)" onkeydown="handlePinKeydown(event, this)" 
+                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" 
+                               onblur="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff'">
+                        <input type="text" maxlength="1" class="pin-digit" data-index="3" 
+                               style="width: 72px; height: 72px; border-radius: 16px; font-size: 32px; font-weight: 600; text-align: center; border: 2px solid #e2e8f0; background: #ffffff; box-shadow: 0 6px 18px rgba(12,18,30,0.03); transition: all 0.3s ease;" 
+                               oninput="handlePinInput(this)" onkeydown="handlePinKeydown(event, this)" 
+                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" 
+                               onblur="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff'">
+                    </div>
+                    
+                    <!-- Hidden input to store the complete PIN -->
+                    <input type="hidden" id="completePin" name="transaction_pin">
                 </div>
 
                 <div id="pinErrorDeposit" class="text-danger small mt-2" style="display: none;">
@@ -311,6 +334,101 @@
 </style>
 
 <script>
+// Global variables for PIN functionality
+let currentPinDigits = ['', '', '', ''];
+
+// PIN Input Handling Functions
+function handlePinInput(input) {
+    const index = parseInt(input.getAttribute('data-index'));
+    let value = input.value;
+    
+    // Only allow numbers
+    value = value.replace(/\D/g, '');
+    
+    if (value.length > 1) {
+        value = value.charAt(0); // Take only first character
+    }
+    
+    input.value = value;
+    currentPinDigits[index] = value;
+    
+    // Update hidden input
+    document.getElementById('completePin').value = currentPinDigits.join('');
+    
+    // Move to next input if value entered
+    if (value !== '' && index < 3) {
+        const nextInput = document.querySelector(`.pin-digit[data-index="${index + 1}"]`);
+        if (nextInput) {
+            nextInput.focus();
+        }
+    }
+    
+    // Update input styling
+    updatePinInputStyle(input, value !== '');
+}
+
+function handlePinKeydown(event, input) {
+    const index = parseInt(input.getAttribute('data-index'));
+    
+    if (event.key === 'Backspace') {
+        // If backspace and current input is empty, move to previous
+        if (input.value === '' && index > 0) {
+            const prevInput = document.querySelector(`.pin-digit[data-index="${index - 1}"]`);
+            if (prevInput) {
+                prevInput.focus();
+                prevInput.value = '';
+                currentPinDigits[index - 1] = '';
+                updatePinInputStyle(prevInput, false);
+            }
+        } else {
+            // Clear current input
+            input.value = '';
+            currentPinDigits[index] = '';
+            updatePinInputStyle(input, false);
+        }
+        event.preventDefault();
+    } else if (event.key === 'ArrowLeft' && index > 0) {
+        const prevInput = document.querySelector(`.pin-digit[data-index="${index - 1}"]`);
+        if (prevInput) prevInput.focus();
+        event.preventDefault();
+    } else if (event.key === 'ArrowRight' && index < 3) {
+        const nextInput = document.querySelector(`.pin-digit[data-index="${index + 1}"]`);
+        if (nextInput) nextInput.focus();
+        event.preventDefault();
+    }
+}
+
+function updatePinInputStyle(input, hasValue) {
+    if (hasValue) {
+        input.style.borderColor = '#059669';
+        input.style.background = 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)';
+        input.style.boxShadow = '0 4px 12px rgba(5, 150, 105, 0.15)';
+    } else {
+        input.style.borderColor = '#e2e8f0';
+        input.style.background = '#ffffff';
+        input.style.boxShadow = '0 6px 18px rgba(12,18,30,0.03)';
+    }
+}
+
+function resetPinInputs() {
+    currentPinDigits = ['', '', '', ''];
+    document.getElementById('completePin').value = '';
+    
+    const inputs = document.querySelectorAll('.pin-digit');
+    inputs.forEach(input => {
+        input.value = '';
+        updatePinInputStyle(input, false);
+    });
+}
+
+function getCurrentPin() {
+    return currentPinDigits.join('');
+}
+
+function isPinComplete() {
+    return currentPinDigits.every(digit => digit !== '');
+}
+
 /* Audio Functions */
 function playSuccessSound() {
     try {
@@ -407,8 +525,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const proceedBtn = document.getElementById('proceedDeposit');
     const pinModalDepositEl = document.getElementById('pinModalDeposit');
     const pinModalDeposit = (typeof bootstrap !== 'undefined') ? new bootstrap.Modal(pinModalDepositEl, {backdrop: 'static', keyboard: true}) : null;
-    const pinGridDeposit = document.getElementById('pinGridDeposit');
-    const pinDigitsDeposit = Array.from(pinGridDeposit.querySelectorAll('.pin-digit'));
     const pinErrorDeposit = document.getElementById('pinErrorDeposit');
     const confirmBtnDeposit = document.getElementById('confirmPinDeposit');
 
@@ -431,65 +547,36 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    // PIN input handling
-    function setupPinInputs(pinDigits) {
-        pinDigits.forEach((input, idx) => {
-            input.addEventListener('input', (e) => {
-                const val = (e.target.value || '').replace(/\D/g, '').slice(-1);
-                e.target.value = val;
-                
-                if (val) {
-                    e.target.classList.add('filled');
-                    if (idx < pinDigits.length - 1) {
-                        pinDigits[idx + 1].focus();
-                    }
-                } else {
-                    e.target.classList.remove('filled');
-                }
-            });
-
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace') {
-                    if (!input.value && idx > 0) {
-                        pinDigits[idx - 1].focus();
-                        pinDigits[idx - 1].value = '';
-                        pinDigits[idx - 1].classList.remove('filled');
-                    }
-                } else if (e.key === 'ArrowLeft' && idx > 0) {
-                    pinDigits[idx - 1].focus();
-                } else if (e.key === 'ArrowRight' && idx < pinDigits.length - 1) {
-                    pinDigits[idx + 1].focus();
-                }
-            });
-        });
-    }
-
-    // Setup PIN inputs
-    setupPinInputs(pinDigitsDeposit);
-
     // Proceed to PIN modal
     proceedBtn.addEventListener('click', function () {
         if (!validateDepositForm()) return;
         
-        pinDigitsDeposit.forEach(d => { 
-            d.value = ''; 
-            d.classList.remove('filled'); 
-        });
+        resetPinInputs();
         pinErrorDeposit.style.display = 'none';
         
         if (pinModalDeposit) {
             pinModalDeposit.show();
-            setTimeout(() => pinDigitsDeposit[0].focus(), 200);
+            // Focus first pin input after modal is shown
+            setTimeout(() => {
+                const firstInput = document.querySelector('.pin-digit[data-index="0"]');
+                if (firstInput) firstInput.focus();
+            }, 300);
         }
     });
 
     // Confirm PIN and submit
     confirmBtnDeposit.addEventListener('click', () => {
-        const pin = pinDigitsDeposit.map(d => d.value || '').join('');
+        const pin = getCurrentPin();
         
-        if (!/^\d{4}$/.test(pin)) {
+        if (!isPinComplete()) {
             pinErrorDeposit.style.display = 'block';
             showToast('Please enter your 4-digit PIN.', 'error');
+            
+            // Focus first empty input
+            const emptyIndex = currentPinDigits.findIndex(digit => digit === '');
+            const emptyInput = document.querySelector(`.pin-digit[data-index="${emptyIndex}"]`);
+            if (emptyInput) emptyInput.focus();
+            
             return;
         }
         
