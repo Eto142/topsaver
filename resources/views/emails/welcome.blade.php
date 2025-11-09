@@ -58,7 +58,7 @@
     </div>
     
     <div class="content">
-        <h2>Dear {{ $user->name }},</h2>
+        <h2>Dear {{ $user->first_name }},</h2>
         
         <p>Welcome to Topsavers Trust Bank! We're excited to have you as our valued customer.</p>
         

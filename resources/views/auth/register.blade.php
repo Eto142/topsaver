@@ -1230,10 +1230,10 @@
                                     value="{{ old('transaction_pin') }}" 
                                     required 
                                     id="transaction_pin" 
-                                    placeholder="Enter 4-6 digit PIN" 
+                                    placeholder="Enter 4 digit PIN" 
                                     maxlength="6"
                                     pattern="[0-9]{4,6}"
-                                    title="Please enter a 4 to 6 digit numeric PIN"
+                                    title="Please enter a 4 digit numeric PIN"
                                     autocomplete="off"
                                 >
                                 <span class="toggle-password" data-target="transaction_pin">
