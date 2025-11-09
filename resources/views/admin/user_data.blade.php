@@ -184,7 +184,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-muted small">Full Name</label>
-                            <div class="fw-semibold">{{ $userProfile->name }}</div>
+                            <div class="fw-semibold">{{ $userProfile->first_name }} {{ $userProfile->last_name }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-muted small">Email Address</label>
@@ -195,9 +195,19 @@
                                 </span>
                             </div>
                         </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Gender</label>
+                            <div class="fw-semibold">{{ $userProfile->gender ?? 'Not provided' }}</div>
+                        </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-muted small">Phone Number</label>
                             <div class="fw-semibold">{{ $userProfile->phone ?? 'Not provided' }}</div>
+                        </div>
+
+                         <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Country</label>
+                            <div class="fw-semibold">{{ $userProfile->country ?? 'Not provided' }}</div>
                         </div>
 
                         <div class="col-md-6 mb-3">
