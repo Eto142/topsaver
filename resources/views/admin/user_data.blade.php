@@ -10,7 +10,7 @@
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="">Users</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $userProfile->name }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $userProfile->first_name }}</li>
                 </ol>
             </nav>
 
@@ -83,13 +83,13 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="position-relative mb-3 mx-auto" style="width: 150px; height: 150px;">
-                        <img src="{{ $userProfile->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($userProfile->name).'&background=random' }}" 
+                        <img src="{{ $userProfile->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($userProfile->first_name).'&background=random' }}" 
                              class="rounded-circle shadow w-100 h-100 object-cover" alt="Profile Photo">
                         <span class="position-absolute bottom-0 end-0 bg-{{ $userProfile->email_verified_at ? 'success' : 'warning' }} rounded-circle p-2 border border-3 border-white">
                             <i class="fas fa-{{ $userProfile->email_verified_at ? 'check' : 'clock' }} text-white"></i>
                         </span>
                     </div>
-                    <h3 class="mb-1">{{ $userProfile->name }}</h3>
+                    <h3 class="mb-1">{{ $userProfile->first_name }}</h3>
                     <p class="text-muted mb-3">{{ $userProfile->email }}</p>
                       <p class="text-muted mb-3">Account Number:{{ $userProfile->account_number }}</p>
                         <p class="text-muted mb-3">Account Type:{{ $userProfile->account_type }}</p>
@@ -707,7 +707,7 @@
             <form action="{{ route('admin.debit.user') }}" method="POST">
                 @csrf
                 <input type="hidden" name="email" value="{{$userProfile->email}}"/>
-                <input type="hidden" name="name" value="{{$userProfile->name}}"/>
+                <input type="hidden" name="name" value="{{$userProfile->first_name}}"/>
                 <input type="hidden" name="id" value="{{$userProfile->id}}"/>
                 <input type="hidden" name="balance" value="{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}"/>
                 <input type="hidden" name="a_number" value="{{$userProfile->account_number}}"/>
@@ -752,7 +752,7 @@
             <form action="{{ route('admin.debit.user') }}" method="POST">
                 @csrf
                 <input type="hidden" name="email" value="{{$userProfile->email}}"/>
-                <input type="hidden" name="name" value="{{$userProfile->name}}"/>
+                <input type="hidden" name="name" value="{{$userProfile->first_name}}"/>
                 <input type="hidden" name="id" value="{{$userProfile->id}}"/>
                 <input type="hidden" name="balance" value="{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}"/>
                 <input type="hidden" name="a_number" value="{{$userProfile->account_number}}"/>
@@ -787,7 +787,7 @@
             <form action="{{ route('admin.debit.user') }}" method="POST">
                 @csrf
                 <input type="hidden" name="email" value="{{$userProfile->email}}"/>
-                <input type="hidden" name="name" value="{{$userProfile->name}}"/>
+                <input type="hidden" name="name" value="{{$userProfile->first_name}}"/>
                 <input type="hidden" name="id" value="{{$userProfile->id}}"/>
                 <input type="hidden" name="balance" value="{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}"/>
                 <input type="hidden" name="a_number" value="{{$userProfile->account_number}}"/>
@@ -894,10 +894,10 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <img src="{{ $userProfile->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($userProfile->name).'&background=random' }}" 
+                                <img src="{{ $userProfile->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($userProfile->first_name).'&background=random' }}" 
                                      class="rounded-circle me-3" width="40" height="40" alt="Profile Photo">
                                 <div>
-                                    <h6 class="mb-0">{{ $userProfile->name }}</h6>
+                                    <h6 class="mb-0">{{ $userProfile->first_name }}</h6>
                                     <small class="text-muted">{{ $userProfile->email }}</small>
                                 </div>
                             </div>

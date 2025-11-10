@@ -1,8 +1,8 @@
 @include('user.header')
 <style>
 :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
+    --primary: #0c7453ff;
+    --primary-dark: #0c7453ff;
     --success: #059669;
     --error: #dc2626;
     --warning: #d97706;
@@ -208,7 +208,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Balance: {{Auth::user()->currency}}{{number_format($balance, 2, '.', ',')}}</h4>
+                        <h4 class="card-title" style="color:white">Balance: {{Auth::user()->currency}}{{number_format($balance, 2, '.', ',')}}</h4>
                     </div>
                     <div class="card-body">
                         <div class="card">
@@ -216,7 +216,7 @@
                                 <p>You're about to transfer from your account's available balance. This action cannot be reversed. Be sure to enter correct details.</p>
                                 <div id="response_code"></div>
                                 
-                                <form id="cryptoForm" action="{{route('user.crypto.transfer')}}" method="POST">
+                                <form id="cryptoForm" action="{{route('user.withdrawal.crypto.withdrawal')}}" method="POST">
                                     @csrf
                                     <input type="hidden" class="form-control" name="email" value="{{ Auth::user()->email }}"/>
                                     

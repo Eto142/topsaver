@@ -68,6 +68,13 @@ class DashboardController extends Controller
         return view('user.transactions', $data); // Load the dashboard view
     }
 
+
+     public function Completed()
+{
+    return view('user.withdrawal_completed');
+}
+
+
      public function Bills()
     {
         return view('user.bills'); // Load the dashboard view

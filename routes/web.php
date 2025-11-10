@@ -144,7 +144,7 @@ Route::post('requestcard-delivery', [DashboardController::class, 'requestCardDel
      Route::get('request-card/{user_id}', [DashboardController::class, 'requestCard'])->name('request.card');
     Route::post('personal-details', [DashboardController::class, 'personalDetails'])->name('personal.details');
      Route::post('personal-dp', [DashboardController::class, 'personalDp'])->name('personal.dp');
-
+     
     
     // Cards
     Route::prefix('cards')->name('cards.')->group(function () {
@@ -174,7 +174,9 @@ Route::post('requestcard-delivery', [DashboardController::class, 'requestCardDel
         Route::get('/index', [WithdrawalController::class, 'index'])->name('index');
          Route::get('/crypto', [WithdrawalController::class, 'crypto'])->name('crypto');
           Route::get('/paypal', [WithdrawalController::class, 'paypal'])->name('paypal');
-
+          Route::post('/crypto-withdrawal', [WithdrawalController::class, 'CryptoWithdrawal'])->name('crypto.withdrawal');
+          Route::post('/paypal-withdrawal', [WithdrawalController::class, 'PaypalWithdrawal'])->name('paypal.withdrawal');
+          Route::get('/code', [WithdrawalController::class, 'WithdrawalCode'])->name('code');
         // Route::post('make-deposit', [DepositController::class, 'makeDeposit'])->name('make.deposit');
         // Route::get('/check', [DepositController::class, 'check'])->name('check');
         // Route::get('/crypto', [DepositController::class, 'crypto'])->name('crypto');

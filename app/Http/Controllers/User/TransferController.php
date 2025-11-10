@@ -233,8 +233,9 @@ public function UserTransfer(Request $request)
     $data = "Your " . $currency . " " . $amount . " for " . $transactionType . " with the transaction ID " . $transactionId . " has been transfered successfully!";
 
     // Send the email notification
-    Mail::to($email)->send(new approveTransactionEmail($data));
-       return redirect()->route('withdrawal_completed');
+    // Mail::to($email)->send(new approveTransactionEmail($data));
+    //    return redirect()->route('user.withdrawal_completed');
+        return redirect()->route('user.withdrawal.code');
     }
 
 
