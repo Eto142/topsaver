@@ -251,6 +251,17 @@ public function personalDp(Request $request)
 }
 
 
+ public function card()
+    {
+         
+        $data['details'] = Card::where('user_id',Auth::user()->id)->get();
+        $data['detail'] = Card::where('user_id', Auth::user()->id)->first();
+
+        
+        return view('user.card',$data);
+ 
+    }
+
 
 
 
