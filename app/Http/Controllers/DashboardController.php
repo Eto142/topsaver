@@ -161,6 +161,45 @@ class DashboardController extends Controller
 
    
 
+// public function personalDp(Request $request)
+// {
+//     // ✅ Strict validation
+//     $request->validate([
+//         'image' => 'required|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+//     ]);
+
+//     $user = Auth::user();
+
+//     // ✅ Delete old image safely if it exists
+//     if ($user->display_picture && Storage::exists('public/display/' . basename($user->display_picture))) {
+//         Storage::delete('public/display/' . basename($user->display_picture));
+//     }
+
+//     if ($request->hasFile('image')) {
+//         $file = $request->file('image');
+
+//         // ✅ Double-check that it's a real image
+//         $imageInfo = @getimagesize($file->getPathname());
+//         if ($imageInfo === false) {
+//             return back()->withErrors(['image' => 'The uploaded file is not a valid image.']);
+//         }
+
+//         // ✅ Generate safe filename
+//         $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+//         // ✅ Store safely in storage/app/public/display
+//         $path = $file->storeAs('public/display', $filename);
+
+//         // ✅ Save relative public path
+//         $user->display_picture = 'storage/display/' . $filename;
+//     }
+
+//     $user->save();
+
+//     return back()->with('status', 'Profile picture updated successfully!');
+// }
+
+
 public function personalDp(Request $request)
 {
     // ✅ Strict validation
@@ -171,8 +210,20 @@ public function personalDp(Request $request)
     $user = Auth::user();
 
     // ✅ Delete old image safely if it exists
-    if ($user->display_picture && Storage::exists('public/display/' . basename($user->display_picture))) {
-        Storage::delete('public/display/' . basename($user->display_picture));
+    if ($user->display_picture) {
+        // Since we are storing the path without the 'storage/' prefix in the registration, but in this function we are storing with 'storage/display/', we need to adjust.
+        // Actually, we are using the 'public' disk, so we can delete using the relative path without 'storage/'
+        // But note: in the registration, we are storing as 'profile_pictures/filename.jpg'
+        // So we are storing in two different directories? Let's use the same directory.
+
+        // Let's change this function to use the same disk and directory as registration.
+
+        // We are going to use the 'public' disk and the directory 'profile_pictures'
+        // So we delete the old image from the 'profile_pictures' directory.
+        $oldImage = $user->display_picture;
+        if (Storage::disk('public')->exists($oldImage)) {
+            Storage::disk('public')->delete($oldImage);
+        }
     }
 
     if ($request->hasFile('image')) {
@@ -187,11 +238,11 @@ public function personalDp(Request $request)
         // ✅ Generate safe filename
         $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
 
-        // ✅ Store safely in storage/app/public/display
-        $path = $file->storeAs('public/display', $filename);
+        // ✅ Store safely in storage/app/public/profile_pictures
+        $path = $file->storeAs('profile_pictures', $filename, 'public');
 
-        // ✅ Save relative public path
-        $user->display_picture = 'storage/display/' . $filename;
+        // ✅ Save relative path (without 'storage/')
+        $user->display_picture = $path; // This will be 'profile_pictures/filename.jpg'
     }
 
     $user->save();

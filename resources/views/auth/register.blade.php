@@ -272,6 +272,18 @@
             background-color: var(--light-color);
         }
         
+        .file-input {
+            padding: 0.75rem 1rem;
+            background-color: var(--gray-light);
+            border: 1px dashed var(--gray-medium);
+            cursor: pointer;
+        }
+        
+        .file-input:hover {
+            border-color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+        
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -538,6 +550,96 @@
             width: auto;
         }
         
+        /* Profile Picture Step Styling */
+        .upload-container {
+            text-align: center;
+            padding: 2rem;
+            border: 2px dashed var(--gray-medium);
+            border-radius: var(--border-radius);
+            background-color: var(--gray-light);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .file-input-button:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+        
+        .preview-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            object-fit: cover;
+        }
+        
+        .preview-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: var(--gray-light);
+            border: 3px dashed var(--gray-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--gray-dark);
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .form-row {
@@ -579,6 +681,10 @@
             
             .main-container {
                 padding: 1rem;
+            }
+            
+            .upload-container {
+                padding: 1.5rem;
             }
         }
         
@@ -707,11 +813,15 @@
                 </div>
                 <div class="progress-step" data-step="5">
                     <div class="step-number">5</div>
+                    <div class="step-label">Profile Picture</div>
+                </div>
+                <div class="progress-step" data-step="6">
+                    <div class="step-number">6</div>
                     <div class="step-label">Review & Submit</div>
                 </div>
             </div>
             
-            <form method="POST" action="{{ route('register') }}" id="registrationForm">
+            <form method="POST" action="{{ route('register') }}" id="registrationForm" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="form-content">
@@ -1265,8 +1375,53 @@
                         </div>
                     </div>
                     
-                    <!-- Step 5: Review & Submit -->
+                    <!-- Step 5: Profile Picture Upload -->
                     <div class="form-section" id="step-5">
+                        <h3 class="section-title">Upload Profile Picture</h3>
+                        
+                        <div class="upload-container">
+                            <div class="upload-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <h3 class="upload-text">Upload your profile picture to complete account setup</h3>
+                            
+                            <div class="file-input-wrapper">
+                                <input type="file" name="display_picture" id="display_picture" accept="image/*" class="file-input">
+                                <label for="display_picture" class="file-input-button">
+                                    <i class="fas fa-cloud-upload-alt"></i> Choose File
+                                </label>
+                            </div>
+                            
+                            <div class="file-name" id="file-name">No file chosen</div>
+                            
+                            <div class="preview-container">
+                                <div class="preview-placeholder" id="preview-placeholder">
+                                    <i class="fas fa-user" style="font-size: 3rem; color: var(--gray-dark);"></i>
+                                </div>
+                                <img id="preview-image" class="preview-image" style="display: none;">
+                            </div>
+                            
+                            <div class="error-message">
+                                @error('display_picture') {{ $message }} @enderror
+                            </div>
+                            
+                            <p style="margin-top: 1rem; color: var(--gray-dark); font-size: 0.85rem;">
+                                Supported formats: JPG, PNG, GIF. Max file size: 2MB.
+                            </p>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary prev-step" data-prev="4">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="button" class="btn btn-primary next-step" data-next="6">
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 6: Review & Submit -->
+                    <div class="form-section" id="step-6">
                         <h3 class="section-title">Review & Submit</h3>
                         
                         <div class="review-summary">
@@ -1293,6 +1448,10 @@
                                 <div class="review-row">
                                     <span class="review-label">Country:</span>
                                     <span class="review-value" id="review-country"></span>
+                                </div>
+                                <div class="review-row">
+                                    <span class="review-label">Profile Picture:</span>
+                                    <span class="review-value" id="review-display-picture">No file chosen</span>
                                 </div>
                             </div>
                             
@@ -1351,7 +1510,7 @@
                         </div>
                         
                         <div class="form-actions">
-                            <button type="button" class="btn btn-secondary prev-step" data-prev="4">
+                            <button type="button" class="btn btn-secondary prev-step" data-prev="5">
                                 <i class="fas fa-arrow-left"></i> Back
                             </button>
                             <button type="submit" class="btn btn-primary">
@@ -1391,7 +1550,7 @@
                     document.getElementById(`step-${nextStep}`).classList.add('active');
                     
                     // If moving to review step, populate review fields
-                    if (nextStep === '5') {
+                    if (nextStep === '6') {
                         populateReviewFields();
                     }
                 }
@@ -1461,6 +1620,10 @@
             document.getElementById('review-phone').textContent = document.getElementById('phone').value;
             document.getElementById('review-dob').textContent = document.getElementById('dob').value;
             document.getElementById('review-country').textContent = document.getElementById('country').value;
+            
+            // Profile picture file name
+            const displayPictureInput = document.getElementById('display_picture');
+            document.getElementById('review-display-picture').textContent = displayPictureInput.files.length > 0 ? displayPictureInput.files[0].name : 'No file chosen';
             
             const accountTypeSelect = document.getElementById('account_type');
             document.getElementById('review-account-type').textContent = accountTypeSelect.options[accountTypeSelect.selectedIndex].text;
@@ -1551,6 +1714,55 @@
             });
         });
         
+        // Profile picture file handling
+        const displayPictureInput = document.getElementById('display_picture');
+        const fileName = document.getElementById('file-name');
+        const previewImage = document.getElementById('preview-image');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
+        
+        displayPictureInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const errorDiv = this.parentElement.parentElement.querySelector('.error-message');
+            
+            if (file) {
+                // Display file name
+                fileName.textContent = file.name;
+                
+                // Check file type
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    errorDiv.textContent = 'Please select a valid image file (JPEG, PNG, GIF).';
+                    this.value = '';
+                    fileName.textContent = 'No file chosen';
+                    return;
+                }
+                
+              // Check file size (15MB)
+if (file.size > 15 * 1024 * 1024) {
+    errorDiv.textContent = 'File size must be less than 15MB.';
+    this.value = '';
+    fileName.textContent = 'No file chosen';
+    return;
+}
+
+                
+                errorDiv.textContent = '';
+                
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    previewPlaceholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileName.textContent = 'No file chosen';
+                previewImage.style.display = 'none';
+                previewPlaceholder.style.display = 'flex';
+            }
+        });
+        
         // Form validation
         const form = document.getElementById('registrationForm');
         form.addEventListener('submit', function(e) {
@@ -1573,12 +1785,6 @@
         
         // Date picker max date (18 years ago)
         document.getElementById('dob').max = new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0];
-        
-        // // Phone number formatting
-        // document.getElementById('phone').addEventListener('input', function(e) {
-        //     const x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-        //     e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        // });
         
         // Phone number formatting for next of kin
         document.getElementById('kin_phone').addEventListener('input', function(e) {

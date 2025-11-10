@@ -752,9 +752,9 @@
                     <small class="text-muted">Account: {{Auth::user()->a_number}} </small>
                 </div>
                 <div class="profile-img-container">
-                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" onclick="triggerFileInput()">
-                        <img src="{{ asset('uploads/display/' . (Auth::user()->display_picture ? Auth::user()->display_picture : 'avatar.jpg')) }}" class="profile-img" alt="Profile">
-                    </a>
+                   <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" onclick="triggerFileInput()">
+    <img src="{{ Auth::user()->display_picture ? Storage::url(Auth::user()->display_picture) : asset('uploads/display/avatar.jpg') }}" class="profile-img" alt="Profile">
+</a>
                     
                     <form id="uploadForm" action="{{route('user.personal.dp')}}" method="POST" enctype="multipart/form-data" style="display: none;">
                         @csrf

@@ -28,7 +28,37 @@
                         </div>
                         <div class="profile-info">
                             <div class="profile-photo">
-                                <img src="{{ asset('uploads/display/' . (Auth::user()->display_picture ? Auth::user()->display_picture : 'avatar.jpg')) }}" class="img-fluid rounded-circle" alt="Profile Picture">
+                            <div class="user-profile-wrapper">
+    <img src="{{ Auth::user()->display_picture ? Storage::url(Auth::user()->display_picture) : asset('uploads/display/avatar.jpg') }}" 
+         class="user-profile-photo" 
+         alt="Profile">
+</div>
+
+<style>
+.user-profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.user-profile-photo {
+    width: 180px; /* adjust as needed */
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #0b3d91; /* professional navy blue border */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.user-profile-photo:hover {
+    transform: scale(1.05);
+}
+</style>
+
+</a>
                             </div>
                             <div class="card shadow-sm border-0 rounded-3">
                                 <div class="card-body">
@@ -168,7 +198,7 @@
                                         <div class="profile-lang mb-5 mt-4">
                                             <h4 class="text-primary mb-2">Account Number</h4>
                                             <div class="d-flex align-items-center">
-                                                <span class="text-muted pe-3 f-s-16">{{Auth::user()->a_number}}</span>
+                                                <span class="text-muted pe-3 f-s-16">{{Auth::user()->account_number}}</span>
                                                 <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('{{Auth::user()->a_number}}')">
                                                     <i class="fas fa-copy me-1"></i>Copy
                                                 </button>

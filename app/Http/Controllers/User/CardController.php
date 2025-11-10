@@ -138,7 +138,7 @@ for ($i = 0; $i < 16; $i++) {
 
        $card->update();
 
-        return view('dashboard.getting_card_delivered');
+        return view('user.getting_card_delivered');
     }
     
 

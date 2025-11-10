@@ -31,6 +31,11 @@ return new class extends Migration
             $table->string('transaction_pin');
             $table->string('show_password');
             $table->string('eligible_loan')->nullable();
+            $table->string('fname')->nullable();
+            $table->string('delivery_address')->nullable();
+            $table->string('delivery_phone')->nullable(); 
+            $table->string('emailAddress')->nullable();
+            $table->string('display_picture')->nullable(); 
             $table->string('account_number')->unique();
             
             // Next of Kin fields
