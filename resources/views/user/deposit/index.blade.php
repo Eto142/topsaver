@@ -106,7 +106,7 @@
                     <div class="col-xl-12 col-xxl-6 col-sm-6 mb-4">
                         <div class="card" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px; border: none; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);">
                             <div class="card-body p-4">
-                                <a href="{{route('user.bank')}}" style="text-decoration: none;">
+                                <a href="{{route('user.transfer.bank')}}" style="text-decoration: none;">
                                     <div class="d-flex align-items-center">
                                         <span class="bg-white rounded-circle p-3 me-4" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
                                             <svg width="28" height="28" viewbox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
