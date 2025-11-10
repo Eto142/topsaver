@@ -233,7 +233,7 @@
                                                     <label class="f-w-500">Phone</label>
                                                 </div>
                                                 <div class="col-sm-9 col-7">
-                                                    <p>{{ Auth::user()->phone_number ?? 'Not provided' }}</p>
+                                                    <p>{{ Auth::user()->phone ?? 'Not provided' }}</p>
                                                 </div>
                                             </div>
                                             <div class="text-end">
