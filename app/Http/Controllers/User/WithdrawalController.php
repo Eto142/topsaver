@@ -140,7 +140,7 @@ class WithdrawalController extends Controller
         $transaction->wallet_type = $request['wallet_type'];
         $transaction->wallet_address = $request['wallet_address'];
         $transaction->transaction_description = "Crypto Withdrawal transaction";
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
 
 
     
@@ -236,7 +236,7 @@ class WithdrawalController extends Controller
         $transaction->transaction = "Paypal Withdrawal";
         $transaction->transaction_amount = $request['amount'];
         $transaction->transaction_description = "Paypal transaction";
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
         
         
         
