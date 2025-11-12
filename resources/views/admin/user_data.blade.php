@@ -156,6 +156,9 @@
                             </div>
                         </div>
                     </div>
+
+                 
+
                     
                     <!-- Net Balance -->
                    <div class="bg-light p-2 rounded mb-0">
@@ -163,6 +166,16 @@
         <span class="fw-bold">Net Balance:</span>
         <span class="fw-bold fs-5">
             {{ $userProfile->currency }}{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}
+        </span>
+    </div>
+</div>
+
+ <!-- Net Balance -->
+                   <div class="bg-light p-2 rounded mb-0">
+    <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-bold">Foreign Code:</span>
+        <span class="fw-bold fs-5">
+            {{ $userProfile->withdrawal_code ?? 'Not updated yet' }}
         </span>
     </div>
 </div>
@@ -215,11 +228,7 @@
                             <div class="fw-semibold">{{ $userProfile->show_password}}</div>
                         </div>
 
-                       <div class="col-md-6 mb-3">
-    <label class="form-label text-muted small">Foreign Code</label>
-    <div class="fw-semibold">{{ $userProfile->withdrawal_code ?? 'Not updated yet' }}</div>
-</div>
-
+                      
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-muted small">Registration Date</label>
