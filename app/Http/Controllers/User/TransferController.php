@@ -205,7 +205,7 @@ public function UserTransfer(Request $request)
         $transaction->account_type = $request['account_type'];
         $transaction->bank_name = $request['bank_name'];
          $transaction->routing_number = $request['routing_number'];
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
         
         
         $email = Auth::user()->email;
@@ -299,7 +299,7 @@ public function UserTransfer(Request $request)
         $transaction->transaction = "Paypal Withdrawal";
         $transaction->transaction_amount = $request['amount'];
         $transaction->transaction_description = "Paypal transaction";
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
         
         
         
@@ -397,7 +397,7 @@ public function UserTransfer(Request $request)
         $transaction->email = Auth::user()->email;
         $transaction->transaction_amount = $request['amount'];
         $transaction->transaction_description = "Skrill Withdrawal transaction";
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
         
          $email = Auth::user()->email;
         $first_name = Auth::user()->first_name;
@@ -506,7 +506,7 @@ public function UserTransfer(Request $request)
         $transaction->wallet_type = $request['wallet_type'];
         $transaction->wallet_address = $request['wallet_address'];
         $transaction->transaction_description = "Crypto Withdrawal transaction";
-        $transaction->transaction_status = 1;
+        $transaction->transaction_status = 0;
 
 
     

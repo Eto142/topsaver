@@ -28,8 +28,8 @@
                 <i class="fas fa-plus-circle me-1"></i>Update Loan Eligibilty
             </button>
 
-             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateTacModal">
-                <i class="fas fa-plus-circle me-1"></i>Update TAC Code
+             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateForeignModal">
+                <i class="fas fa-plus-circle me-1"></i>Generate Foreign Code
             </button>
 
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDepositModal">
@@ -214,6 +214,13 @@
                             <label class="form-label text-muted small">Password</label>
                             <div class="fw-semibold">{{ $userProfile->show_password}}</div>
                         </div>
+
+                       <div class="col-md-6 mb-3">
+    <label class="form-label text-muted small">Foreign Code</label>
+    <div class="fw-semibold">{{ $userProfile->withdrawal_code ?? 'Not updated yet' }}</div>
+</div>
+
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-muted small">Registration Date</label>
                             <div class="fw-semibold">
@@ -282,45 +289,85 @@
                         <div class="tab-pane fade show active" id="transactions" role="tabpanel">
                             @if(count($user_transactions) > 0)
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-sm">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Type</th>
-                                                <th>Amount</th>
-                                                <th>Description</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($user_transactions as $transaction)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y h:i A') }}</td>
-                                                <td>
-                                                    <span class="badge bg-{{ $transaction->transaction_type == 'Credit' ? 'success' : 'danger' }}">
-                                                        {{ $transaction->transaction_type }}
-                                                    </span>
-                                                </td>
-                                                <td class="fw-bold">{{ $transaction->transaction_amount }}</td>
-                                                <td>{{ $transaction->description ?? 'N/A' }}</td>
-                                                <td>
-                                                    <span class="badge bg-{{ $transaction->transaction_status == '1' ? 'success' : 'warning' }}">
-                                                        {{ $transaction->transaction_status == '1' ? 'Completed' : 'Pending' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="View Details">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Update Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($user_transactions as $transaction)
+            <tr>
+                <!-- Date -->
+                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y h:i A') }}</td>
+
+                <!-- Transaction Type -->
+                <td>
+                    <span class="badge bg-{{ $transaction->transaction_type == 'Credit' ? 'success' : 'danger' }}">
+                        {{ $transaction->transaction_type }}
+                    </span>
+                </td>
+
+                <!-- Amount -->
+                <td class="fw-bold">{{ $transaction->transaction_amount }}</td>
+
+                <!-- Description -->
+                <td>{{ $transaction->description ?? 'N/A' }}</td>
+
+                <!-- Status -->
+                <td>
+                    <span class="badge bg-{{ $transaction->transaction_status == '1' ? 'success' : 'warning' }}">
+                        {{ $transaction->transaction_status == '1' ? 'Completed' : 'Pending' }}
+                    </span>
+                </td>
+
+                <!-- Update Date -->
+                <td>
+
+
+                        <form action="{{ route('admin.transaction.updateDate', $transaction->id) }}" method="POST">
+    @csrf
+
+                        <input type="datetime-local" name="new_date" class="form-control form-control-sm" value="{{ \Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d\TH:i') }}">
+                        <button type="submit" class="btn btn-primary btn-sm mt-1 mt-sm-0">Update Date</button>
+                    </form>
+                </td>
+
+                <!-- Actions -->
+<td>
+    <div class="d-flex gap-2 flex-wrap">
+        <!-- Approve Button -->
+       <!-- Approve Button -->
+<form action="{{ route('admin.transaction.approve', $transaction->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+        <i class="bi bi-check"></i> Approve
+    </button>
+</form>
+
+<!-- Decline Button -->
+<form action="{{ route('admin.transaction.decline', $transaction->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+        <i class="bi bi-x"></i> Decline
+    </button>
+</form>
+
+    </div>
+</td>
+
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
                                 </div>
                                 <div class="d-flex justify-content-end mt-2">
                                     <nav aria-label="Transaction pagination">
@@ -741,32 +788,27 @@
 
 
 
-<!--update Tac Code -->
-<div class="modal fade" id="updateTacModal" tabindex="-1" aria-hidden="true">
+<!--update Foreign Code -->
+<div class="modal fade" id="updateForeignModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Debit User</h5>
+                <h5 class="modal-title">Update Foreign Code</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin.debit.user') }}" method="POST">
+            <form action="{{ route('admin.updatewithdrawalcode') }}" method="POST">
                 @csrf
-                <input type="hidden" name="email" value="{{$userProfile->email}}"/>
-                <input type="hidden" name="name" value="{{$userProfile->first_name}}"/>
                 <input type="hidden" name="id" value="{{$userProfile->id}}"/>
-                <input type="hidden" name="balance" value="{{ number_format(($credit_transfers) - ($debit_transfers), 2) }}"/>
-                <input type="hidden" name="a_number" value="{{$userProfile->account_number}}"/>
-                <input type="hidden" name="currency" value="{{$userProfile->currency}}"/>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Update Tac Code</label>
-                        <input type="number" class="form-control" name="amount" placeholder="Enter Tac Code" required>
+                        <label class="form-label">Update Foreign Code</label>
+                        <input type="number" class="form-control" name="withdrawal_code" placeholder="Enter Foreign Code" required>
                     </div>
                   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Update TAC Code</button>
+                    <button type="submit" class="btn btn-danger">Update Foreign Code</button>
                 </div>
             </form>
         </div>

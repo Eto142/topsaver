@@ -4,47 +4,128 @@
     <!-- Dashboard Content -->
    <div class="row animate-fadein">
     <!-- Account Overview - Compact Height -->
-    <div class="col-lg-8 mb-3 mb-lg-0">
-        <div class="dashboard-card h-100" style="padding: 1rem;">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="card-title mb-0" style="font-size: 1rem;">
-                    <i class="fas fa-wallet"></i> Account Overview
-                </h5>
-                <br>
-                 
-                     
-                <div class="form-check form-switch" style="transform: scale(0.8);">
+ <div class="col-lg-8 mb-3 mb-lg-0">
+    <div class="dashboard-card h-100" style="padding: 1rem;">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+            <h5 class="card-title mb-0" style="font-size: 1rem;">
+                <i class="fas fa-wallet"></i> Account Overview
+            </h5>
+
+            <div class="d-flex flex-column align-items-end">
+                <div class="form-check form-switch mb-1" style="transform: scale(0.8);">
                     <input class="form-check-input" type="checkbox" id="balanceToggle" checked>
                     <label class="form-check-label" for="balanceToggle">Show Balance</label>
                 </div>
-            </div>
-            
-            <div class="row align-items-end">
-                <div class="col-md-6">
-                      <div class="fw-semibold"> Welcome {{Auth::user()->first_name}} {{Auth::user()->last_name}}</div>
-                    <p class="text-muted mb-1" style="font-size: 0.8rem;">Available Balance</p>
-                    <h2 class="balance-display" style="font-size: 1.5rem;">{{ Auth::user()->currency }}{{ number_format($balance, 2) }}</h2>
-                    <span class="account-status" style="font-size: 0.75rem;">
-                        <i class="fas fa-check-circle"></i> Active Account
-                    </span>
-                </div>
-<a href="{{ route('user.payments.index') }}">Make Payment</a>
 
-                <div class="col-md-6 mt-2 mt-md-0">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="text-muted mb-1" style="font-size: 0.8rem;">Account Number</p>
-                            <h6 class="fw-semibold" style="font-size: 0.9rem;">{{Auth::user()->account_number}}</h6>
-                        </div>
-                        <div class="col-6">
-                            <p class="text-muted mb-1" style="font-size: 0.8rem;">Account Type</p>
-                            <h6 class="fw-semibold" style="font-size: 0.9rem;">{{ Auth::user()->account_type }}</h6>
-                        </div>
+                <!-- Enhanced Make Payment Button -->
+                <a href="{{ route('user.payments.index') }}" class="make-payment-btn mt-1">
+                    <i class="fas fa-bolt"></i> Make Payment
+                </a>
+            </div>
+        </div>
+
+        <div class="row align-items-end">
+            <div class="col-md-6">
+                <div class="fw-semibold">
+                    Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                </div>
+                <p class="text-muted mb-1" style="font-size: 0.8rem;">Available Balance</p>
+                <h2 class="balance-display" style="font-size: 1.5rem;">
+                    {{ Auth::user()->currency }}{{ number_format($balance, 2) }}
+                </h2>
+                <span class="account-status" style="font-size: 0.75rem;">
+                    <i class="fas fa-check-circle"></i> Active Account
+                </span>
+            </div>
+
+            <div class="col-md-6 mt-2 mt-md-0">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="text-muted mb-1" style="font-size: 0.8rem;">Account Number</p>
+                        <h6 class="fw-semibold" style="font-size: 0.9rem;">
+                            {{ Auth::user()->account_number }}
+                        </h6>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted mb-1" style="font-size: 0.8rem;">Account Type</p>
+                        <h6 class="fw-semibold" style="font-size: 0.9rem;">
+                            {{ Auth::user()->account_type }}
+                        </h6>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<style>
+.make-payment-btn {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white !important;
+    font-weight: 700;
+    font-size: 0.78rem;
+    border-radius: 30px;
+    padding: 6px 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.5);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add a glowing animated border */
+.make-payment-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 2px;
+    background: linear-gradient(90deg, #00e1ff, #007bff, #00c6ff, #00e1ff);
+    background-size: 300% 300%;
+    z-index: 0;
+    animation: glowMove 3s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.make-payment-btn i {
+    font-size: 0.85rem;
+}
+
+/* Hover effect */
+.make-payment-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 16px rgba(0, 153, 255, 0.65);
+    background: linear-gradient(135deg, #0056b3, #0095ff);
+}
+
+/* Subtle animation for the glowing border */
+@keyframes glowMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .make-payment-btn {
+        font-size: 0.75rem;
+        padding: 5px 14px;
+    }
+
+    .form-check.form-switch {
+        transform: scale(0.9);
+    }
+
+    .dashboard-card h5 {
+        font-size: 0.95rem;
+    }
+}
+</style>
 
 
     <!-- Card Section - Compact Height (Will be moved before carousel on mobile) -->

@@ -8,10 +8,12 @@ use App\Http\Controllers\Admin\ManageLoanController;
 use App\Http\Controllers\Admin\ManagePaymentController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\SendEmailController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\TransferController;
 use App\Http\Controllers\Admin\WalletController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -60,7 +62,14 @@ use Illuminate\Support\Facades\Route;
 
   //transaction controller
    Route::get('user_transactions', [TransactionController::class, 'usersTransaction'])->name('transactions');
-    Route::post('add-transaction/{id}', [ManageUserController::class, 'addTransaction'])
+  Route::post('admin/approve-transaction/{id}', [TransactionController::class, 'approveTransaction'])->name('transaction.approve');
+  Route::post('admin/decline-transaction/{id}', [TransactionController::class, 'declineTransaction'])->name('transaction.decline');
+Route::post('update-transaction-date/{id}', [TransactionController::class, 'updateTransactionDate'])
+    ->name('transaction.updateDate');
+
+
+   
+   Route::post('add-transaction/{id}', [ManageUserController::class, 'addTransaction'])
     ->name('add.transaction');
 
      Route::post('withdrawal_tax_code/{id}', [ManageUserController::class, 'WithdrawalTaxCode'])
@@ -107,6 +116,10 @@ Route::post('/decline-transfer/{id}', [TransferController::class, 'declineTransf
 
 
 
+
+    //withdrawal code update
+
+    Route::post('/updatewithdrawalcode', [WithdrawalController::class, 'updateWithdrawalCode'])->name('updatewithdrawalcode');
 });
 
 });

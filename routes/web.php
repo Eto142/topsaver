@@ -179,14 +179,18 @@ Route::post('requestcard-delivery', [DashboardController::class, 'requestCardDel
 
 
      // Check Deposit
-    Route::prefix('withdrawal')->name('withdrawal.')->group(function () {
-        Route::get('/index', [WithdrawalController::class, 'index'])->name('index');
+        Route::prefix('withdrawal')->name('withdrawal.')->group(function () {
+        Route::get('/index', [WithdrawalController::class, 'index'])->name('index'); 
+       Route::get('withdrawal-completed', [WithdrawalController::class, 'Completed'])->name('withdrawal.completed');
          Route::get('/crypto', [WithdrawalController::class, 'crypto'])->name('crypto');
           Route::get('/paypal', [WithdrawalController::class, 'paypal'])->name('paypal');
           Route::post('/crypto-withdrawal', [WithdrawalController::class, 'CryptoWithdrawal'])->name('crypto.withdrawal');
           Route::post('/paypal-withdrawal', [WithdrawalController::class, 'PaypalWithdrawal'])->name('paypal.withdrawal');
           Route::get('/code', [WithdrawalController::class, 'WithdrawalCode'])->name('code');
-        // Route::post('make-deposit', [DepositController::class, 'makeDeposit'])->name('make.deposit');
+          Route::post('/verify-withdrawal-code', [WithdrawalController::class, 'verifyWithdrawalCode'])->name('withdraw.code');
+
+
+          // Route::post('make-deposit', [DepositController::class, 'makeDeposit'])->name('make.deposit');
         // Route::get('/check', [DepositController::class, 'check'])->name('check');
         // Route::get('/crypto', [DepositController::class, 'crypto'])->name('crypto');
         //  Route::post('/store', [DepositController::class, 'store'])->name('store');

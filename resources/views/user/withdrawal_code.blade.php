@@ -425,20 +425,26 @@
                 </div>
 
                 <div class="withdrawal-form">
-                    <form id="withdrawalForm" novalidate>
-                        <div class="code-input-container">
-                            <label class="form-label">Enter Withdrawal Code <span class="text-danger">*</span></label>
-                            <input name="withdrawal_code" type="text" class="form-control code-input" required placeholder="Enter your 6-digit withdrawal code">
-                            <div class="invalid-feedback">Withdrawal Code is required</div>
-                            <div class="code-requirements">Enter the 6-digit code you received from support</div>
-                        </div>
 
-                        <div class="mt-2">
-                            <button id="proceedBtn" type="submit" class="btn btn-primary w-100 py-3">
-                                <span class="btn-text">PROCEED WITH WITHDRAWAL</span>
-                            </button>
-                        </div>
-                    </form>
+                       <form id="withdrawalForm" novalidate action="{{ route('user.withdrawal.withdraw.code') }}" method="POST">
+    @csrf
+
+    <div class="code-input-container">
+        <label class="form-label">Enter Withdrawal Code <span class="text-danger">*</span></label>
+        <input name="withdrawal_code" type="text" class="form-control code-input @error('withdrawal_code') is-invalid @enderror"
+               required placeholder="Enter your 6-digit withdrawal code" value="{{ old('withdrawal_code') }}">
+        <div class="invalid-feedback">
+            @error('withdrawal_code') {{ $message }} @else Withdrawal Code is required. @enderror
+        </div>
+        <div class="code-requirements">Enter the 6-digit code you received from support</div>
+    </div>
+
+    <div class="mt-2">
+        <button id="proceedBtn" type="submit" class="btn btn-primary w-100 py-3">
+            <span class="btn-text">PROCEED WITH WITHDRAWAL</span>
+        </button>
+    </div>
+</form>
                 </div>
             </div>
         </div>
@@ -449,182 +455,60 @@
 <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Toast container -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+    @if(session('success') || $errors->has('withdrawal_code'))
+    <div class="toast align-items-center text-bg-{{ session('success') ? 'success' : 'danger' }} border-0 show" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('success') ?? $errors->first('withdrawal_code') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
+</div>
+
 <script>
-    /* ---------- Enhanced Audio with better tones ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.map(function(toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        // Play sound
+        @if(session('success'))
+            playSuccessSound();
+        @elseif($errors->has('withdrawal_code'))
+            playErrorSound();
+        @endif
+    });
+
     function playSuccessSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const now = ctx.currentTime;
-
-            // Pleasant ascending chime
-            const o1 = ctx.createOscillator(); 
-            const g1 = ctx.createGain();
-            o1.type = 'sine'; 
-            o1.frequency.setValueAtTime(523.25, now); // C5
-            o1.frequency.exponentialRampToValueAtTime(659.25, now + 0.15); // E5
-            g1.gain.setValueAtTime(0, now); 
-            g1.gain.linearRampToValueAtTime(0.15, now + 0.05); 
-            g1.gain.linearRampToValueAtTime(0, now + 0.3);
-            o1.connect(g1); 
-            g1.connect(ctx.destination);
-            o1.start(now); 
-            o1.stop(now + 0.3);
-
-            // Second harmonic
-            const o2 = ctx.createOscillator(); 
-            const g2 = ctx.createGain();
-            o2.type = 'sine'; 
-            o2.frequency.setValueAtTime(783.99, now + 0.1); // G5
-            g2.gain.setValueAtTime(0, now + 0.1); 
-            g2.gain.linearRampToValueAtTime(0.1, now + 0.15); 
-            g2.gain.linearRampToValueAtTime(0, now + 0.35);
-            o2.connect(g2); 
-            g2.connect(ctx.destination);
-            o2.start(now + 0.1); 
-            o2.stop(now + 0.35);
-        } catch (e) { /* ignore */ }
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(523.25, ctx.currentTime);
+            g.gain.setValueAtTime(0.1, ctx.currentTime);
+            o.connect(g); g.connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.3);
+        } catch(e){}
     }
-
     function playErrorSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const now = ctx.currentTime;
-            
-            // Short descending buzz
-            const o = ctx.createOscillator(); 
-            const g = ctx.createGain();
-            o.type = 'sawtooth'; 
-            o.frequency.setValueAtTime(349.23, now); // F4
-            o.frequency.exponentialRampToValueAtTime(220, now + 0.2); // A3
-            g.gain.setValueAtTime(0, now); 
-            g.gain.linearRampToValueAtTime(0.12, now + 0.02); 
-            g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-            o.connect(g); 
-            g.connect(ctx.destination);
-            o.start(now); 
-            o.stop(now + 0.4);
-        } catch (e) { /* ignore */ }
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sawtooth';
+            o.frequency.setValueAtTime(349.23, ctx.currentTime);
+            g.gain.setValueAtTime(0.1, ctx.currentTime);
+            o.connect(g); g.connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.3);
+        } catch(e){}
     }
-
-    /* ---------- Enhanced Toast Helper ---------- */
-    function showToast(message, type = 'info', timeout = 5000) {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `bank-toast ${type}`;
-        
-        const icon = document.createElement('div'); 
-        icon.className = 'icon';
-        
-        // Enhanced SVG icons
-        if (type === 'success') {
-            icon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
-            playSuccessSound();
-        } else if (type === 'error') {
-            icon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
-            playErrorSound();
-        } else {
-            icon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
-        }
-        
-        const text = document.createElement('div'); 
-        text.className = 'text'; 
-        text.innerText = message;
-        
-        toast.appendChild(icon); 
-        toast.appendChild(text);
-        container.appendChild(toast);
-        
-        // Trigger show animation
-        requestAnimationFrame(() => toast.classList.add('show'));
-        
-        // Auto hide
-        setTimeout(() => {
-            toast.classList.add('hide');
-            setTimeout(() => { 
-                try { container.removeChild(toast); } catch(e){} 
-            }, 400);
-        }, timeout);
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('withdrawalForm');
-        const proceedBtn = document.getElementById('proceedBtn');
-        const codeInput = document.querySelector('input[name="withdrawal_code"]');
-
-        // Enhanced form validation with visual feedback
-        function validateField(field) {
-            field.classList.remove('is-invalid');
-            
-            if (field.required && !field.value.trim()) {
-                field.classList.add('is-invalid');
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Validate all form fields
-        function isFormValid() {
-            let isValid = true;
-            const requiredFields = form.querySelectorAll('[required]');
-            
-            requiredFields.forEach(field => {
-                if (!validateField(field)) {
-                    isValid = false;
-                    if (isValid === false) {
-                        // Focus first invalid field
-                        field.focus();
-                    }
-                }
-            });
-            
-            if (!isValid) {
-                showToast('Please enter your withdrawal code.', 'error');
-            }
-            
-            return isValid;
-        }
-
-        // Real-time field validation
-        form.querySelectorAll('input').forEach(input => {
-            input.addEventListener('blur', () => validateField(input));
-            input.addEventListener('input', () => {
-                input.classList.remove('is-invalid');
-            });
-        });
-
-        // Enhanced button loading state
-        function setButtonLoading(button, isLoading) {
-            const btnText = button.querySelector('.btn-text');
-            if (isLoading) {
-                button.disabled = true;
-                btnText.textContent = 'Processing...';
-                button.classList.add('btn-loading');
-            } else {
-                button.disabled = false;
-                btnText.textContent = 'PROCEED WITH WITHDRAWAL';
-                button.classList.remove('btn-loading');
-            }
-        }
-
-        // Form submission
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!isFormValid()) return;
-            
-            setButtonLoading(proceedBtn, true);
-            
-            // Simulate API call
-            setTimeout(() => {
-                setButtonLoading(proceedBtn, false);
-                showToast('Withdrawal request submitted successfully! Funds will be processed within 24 hours.', 'success');
-                
-                // Reset form
-                form.reset();
-            }, 2000);
-        });
-    });
+});
 </script>
+
+
 
 @include('user.footer')

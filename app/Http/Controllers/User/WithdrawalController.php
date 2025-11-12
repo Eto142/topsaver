@@ -280,4 +280,30 @@ class WithdrawalController extends Controller
 
 
 
+
+// withdrawal code verification (normal form submission)
+public function verifyWithdrawalCode(Request $request)
+{
+    $request->validate([
+        'withdrawal_code' => 'required|string|max:6',
+    ]);
+
+    $user = Auth::user();
+
+    if ($request->withdrawal_code !== $user->withdrawal_code) {
+        return redirect()->back()->withErrors(['withdrawal_code' => 'Invalid withdrawal code. Please contact support.']);
+    }
+
+    return redirect()->route('user.withdrawal.withdrawal.completed')->with('success', 'Withdrawal code verified successfully. Proceeding...');
+}
+
+
+
+ 
+    public function Completed()
+{
+    return view('user.withdrawal_completed');
+}
+
+
 }

@@ -35,6 +35,7 @@ class User extends Authenticatable
         'kin_address',
         'referral_source',
         'eligible_loan',
+        'withdrawal_code'
     ];
 
     protected $hidden = [

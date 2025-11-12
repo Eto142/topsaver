@@ -444,7 +444,7 @@
 
           <div class="col-md-6 mb-4">
             <label class="form-label">Account Name <span class="text-danger">*</span></label>
-            <input name="account_name" type="text" class="form-control" required placeholder="John Doe">
+            <input name="account_name" type="text" class="form-control" required placeholder="Enter Account Name">
             <div class="invalid-feedback">Please enter the account name.</div>
           </div>
 
@@ -456,7 +456,7 @@
 
           <div class="col-md-6 mb-4">
             <label class="form-label">Bank Name <span class="text-danger">*</span></label>
-            <input name="bank_name" type="text" class="form-control" required placeholder="Example Bank">
+            <input name="bank_name" type="text" class="form-control" required placeholder="Enter Bank Name">
             <div class="invalid-feedback">Please enter the bank name.</div>
           </div>
 
