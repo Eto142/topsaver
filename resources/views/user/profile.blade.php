@@ -703,3 +703,5 @@ function navigateToTab(tabId) {
     }
 }
 </style>
+
+@include('user.footer')
