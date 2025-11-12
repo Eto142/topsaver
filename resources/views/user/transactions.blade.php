@@ -361,4 +361,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
+@include('user.footer')
