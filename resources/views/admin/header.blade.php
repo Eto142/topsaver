@@ -334,6 +334,13 @@
                 <i class="fas fa-users"></i>
                 <span>Manage Users</span>
             </a>
+
+            
+            <a href="{{ route('admin.wallets.index') }}" class="nav-link">
+    <i class="fas fa-sync-alt"></i>
+    <span>Update Wallet/Bank</span>
+</a>
+
             
             <a href="{{ route('admin.transfers') }}" class="nav-link">
                 <i class="fas fa-piggy-bank"></i>

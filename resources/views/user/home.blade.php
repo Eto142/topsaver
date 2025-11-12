@@ -28,6 +28,8 @@
                         <i class="fas fa-check-circle"></i> Active Account
                     </span>
                 </div>
+<a href="{{ route('user.payments.index') }}">Make Payment</a>
+
                 <div class="col-md-6 mt-2 mt-md-0">
                     <div class="row">
                         <div class="col-6">
@@ -43,6 +45,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Card Section - Compact Height (Will be moved before carousel on mobile) -->
     <div class="col-lg-4 d-lg-block d-none">

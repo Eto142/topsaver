@@ -8,10 +8,12 @@ use App\Http\Controllers\User\BillController;
 use App\Http\Controllers\User\CardController;
 use App\Http\Controllers\User\DepositController;
 use App\Http\Controllers\User\LoanController;
+use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\TransferController;
 use App\Http\Controllers\User\WithdrawalController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -165,6 +167,13 @@ Route::post('requestcard-delivery', [DashboardController::class, 'requestCardDel
         Route::get('loan-user', [LoanController::class, 'LoanUser'])->name('loan-user');
         Route::post('make-loan', [LoanController::class, 'makeLoan'])->name('make.loan');
         Route::post('continue-loan', [LoanController::class, 'ContinueLoan'])->name('continue.loan');
+    });
+
+
+     // payments
+        Route::prefix('payments')->name('payments.')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('index');
+    
     });
     
 

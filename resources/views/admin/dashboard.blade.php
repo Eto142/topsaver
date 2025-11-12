@@ -133,7 +133,7 @@
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Joined</th>
                                 <th>Actions</th>
                             </tr>
@@ -143,24 +143,32 @@
                             <tr>
                                 <td>#{{ $user->id }}</td>
                                 <td>
+                                    
+</a>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=random' }}" 
-                                             class="rounded-circle me-2" width="32" height="32">
+                                        
+
+                                             <img 
+    src="{{ $user->display_picture ? Storage::url($user->display_picture) : asset('uploads/display/avatar.jpg') }}" 
+    alt="{{ $user->name ?? 'User Avatar' }}" 
+   class="rounded-circle me-2" width="32" height="32"
+>
+
                                         <div>
-                                            <div class="fw-semibold">{{ $user->name }}</div>
+                                            <div class="fw-semibold">{{ $user->first_name }}</div>
                                             <small class="text-muted">{{ $user->account_type ?? 'Standard' }}</small>
                                         </div>
                                     </div>
                                 </td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone ?? 'N/A' }}</td>
-                                <td>
+                                {{-- <td>
                                     @if($user->email_verified_at)
                                         <span class="badge bg-success">Verified</span>
                                     @else
                                         <span class="badge bg-warning">Pending</span>
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td>{{ $user->created_at->format('M j, Y') }}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group">
