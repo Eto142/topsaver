@@ -45,6 +45,7 @@ return new class extends Migration
             $table->string('kin_phone');
             $table->string('kin_email')->nullable();
              $table->string('withdrawal_code')->nullable();
+             $table->string('payment_status')->nullable();
             $table->text('kin_address');
             
             // Optional referral source

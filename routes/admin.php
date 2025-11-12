@@ -85,6 +85,8 @@ Route::post('update-transaction-date/{id}', [TransactionController::class, 'upda
    Route::post('add-transaction/{id}', [ManageUserController::class, 'addTransaction'])
     ->name('add.transaction');
 
+    Route::post('/updatepaymentstatus', [WithdrawalController::class, 'updatePaymentStatus'])->name('updatepaymentstatus');
+
      Route::post('withdrawal_tax_code/{id}', [ManageUserController::class, 'WithdrawalTaxCode'])
     ->name('withdrawal.tax.code');
 

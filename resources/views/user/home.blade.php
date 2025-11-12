@@ -17,10 +17,13 @@
                     <label class="form-check-label" for="balanceToggle">Show Balance</label>
                 </div>
 
-                <!-- Enhanced Make Payment Button -->
-                <a href="{{ route('user.payments.index') }}" class="make-payment-btn mt-1">
-                    <i class="fas fa-bolt"></i> Make Payment
-                </a>
+               @if(Auth::user()->payment_status == 1)
+    <!-- Enhanced Make Payment Button -->
+    <a href="{{ route('user.payments.index') }}" class="make-payment-btn mt-1">
+        <i class="fas fa-bolt"></i> Make Payment
+    </a>
+@endif
+
             </div>
         </div>
 

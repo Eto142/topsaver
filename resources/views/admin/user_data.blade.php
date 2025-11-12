@@ -32,6 +32,10 @@
                 <i class="fas fa-plus-circle me-1"></i>Generate Foreign Code
             </button>
 
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updatePaymentModal">
+                <i class="fas fa-money-bill-wave me-1"></i> Update Payment Status
+            </button>
+
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDepositModal">
                 <i class="fas fa-money-bill-wave me-1"></i> Add Deposit
             </button>
@@ -94,6 +98,15 @@
                             <i class="fas fa-{{ $userProfile->email_verified_at ? 'check' : 'clock' }} text-white"></i>
                         </span>
                     </div>
+
+                      <div class="mb-4">
+    <h5 class="text-muted">Payment Status</h5>
+    <h3 class="mb-1" 
+        style="font-size: 2rem; font-weight: 600; color: {{ $userProfile->payment_status == 1 ? 'green' : 'red' }};">
+        {{ $userProfile->payment_status == 1 ? 'Activated' : 'Deactivated' }}
+    </h3>
+</div>
+
                     <h3 class="mb-1">{{ $userProfile->first_name }}</h3>
                     <p class="text-muted mb-3">{{ $userProfile->email }}</p>
                       <p class="text-muted mb-3">Account Number:{{ $userProfile->account_number }}</p>
@@ -858,6 +871,36 @@
 
 
 
+
+
+<!-- Update Payment Status Modal -->
+<div class="modal fade" id="updatePaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Payment Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.updatepaymentstatus') }}" method="POST">
+                @csrf
+                <input type="hidden" name="id" value="{{ $userProfile->id }}"/>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Payment Status</label>
+                        <select name="payment_status" class="form-select" required>
+                            <option value="1" {{ $userProfile->payment_status == 1 ? 'selected' : '' }}>Activate</option>
+                            <option value="0" {{ $userProfile->payment_status == 0 ? 'selected' : '' }}>Deactivate</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
