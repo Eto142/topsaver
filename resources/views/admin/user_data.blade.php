@@ -38,9 +38,14 @@
             {{-- <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addLoanModal">
                 <i class="fas fa-hand-holding-usd me-1"></i> Add Loan
             </button> --}}
-            <button class="btn btn-info">
-                <i class="fas fa-broom me-1"></i> Clear Account
-            </button>
+            <form action="{{ route('admin.clear.account', $userProfile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to clear this account?');" class="d-inline">
+    @csrf
+    <button type="submit" class="btn btn-info">
+        <i class="fas fa-broom me-1"></i> Clear Account
+    </button>
+</form>
+
+
         </div>
     </div>
     @if(session('status') || session('message'))
@@ -183,77 +188,72 @@
             </div>
         </div>
         
-        <!-- Right Column - User Details and Activity -->
-        <div class="col-lg-8">
-            <!-- Personal Information Card -->
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Personal Information</h5>
-                    {{-- <span class="badge bg-{{ $userProfile->status === 'active' ? 'success' : 'secondary' }}">
-                        {{ ucfirst($userProfile->status) }}
-                    </span> --}}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Full Name</label>
-                            <div class="fw-semibold">{{ $userProfile->first_name }} {{ $userProfile->last_name }}</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Email Address</label>
-                            <div class="fw-semibold d-flex align-items-center">
-                                {{ $userProfile->email }}
-                                <span class="badge bg-{{ $userProfile->email_verified_at ? 'success' : 'warning' }} ms-2">
-                                    {{ $userProfile->email_verified_at ? 'Verified' : 'Unverified' }}
-                                </span>
-                            </div>
-                        </div>
+<div class="col-lg-8">
+    <!-- Combined Information Card -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">User Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Gender</label>
-                            <div class="fw-semibold">{{ $userProfile->gender ?? 'Not provided' }}</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Phone Number</label>
-                            <div class="fw-semibold">{{ $userProfile->phone ?? 'Not provided' }}</div>
-                        </div>
-
-                         <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Country</label>
-                            <div class="fw-semibold">{{ $userProfile->country ?? 'Not provided' }}</div>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Password</label>
-                            <div class="fw-semibold">{{ $userProfile->show_password}}</div>
-                        </div>
-
-                      
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Registration Date</label>
-                            <div class="fw-semibold">
-                                {{ \Carbon\Carbon::parse($userProfile->created_at)->format('M d, Y h:i A') }}
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            {{-- <label class="form-label text-muted small">Last Login</label> --}}
-                            {{-- <div class="fw-semibold">
-                                {{ $userProfile->last_login_at ? \Carbon\Carbon::parse($userProfile->last_login_at)->format('M d, Y h:i A') : 'Never logged in' }}
-                            </div> --}}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            {{-- <label class="form-label text-muted small">IP Address</label> --}}
-                            {{-- <div class="fw-semibold">
-                                {{ $userProfile->last_login_ip ?? 'N/A' }}
-                            </div> --}}
+                <!-- Personal Information -->
+                <div class="col-md-6 mb-3">
+                    <h6 class="text-muted">Personal Information</h6>
+                    <div class="mb-2">
+                        <small class="text-muted">Full Name</small>
+                        <div class="fw-semibold">{{ $userProfile->first_name }} {{ $userProfile->last_name }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Email Address</small>
+                        <div class="fw-semibold d-flex align-items-center">
+                            {{ $userProfile->email }}
+                            <span class="badge bg-{{ $userProfile->email_verified_at ? 'success' : 'warning' }} ms-2">
+                                {{ $userProfile->email_verified_at ? 'Verified' : 'Unverified' }}
+                            </span>
                         </div>
                     </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Gender</small>
+                        <div class="fw-semibold">{{ $userProfile->gender ?? 'Not provided' }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Phone Number</small>
+                        <div class="fw-semibold">{{ $userProfile->phone ?? 'Not provided' }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Country</small>
+                        <div class="fw-semibold">{{ $userProfile->country ?? 'Not provided' }}</div>
+                    </div>
                 </div>
+
+                <!-- Card Delivery Information -->
+                <div class="col-md-6 mb-3">
+                    <h6 class="text-muted">Card Delivery Information</h6>
+                    <div class="mb-2">
+                        <small class="text-muted">Full Name</small>
+                        <div class="fw-semibold">{{ $userProfile->fname ?? 'Not provided' }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Delivery Address</small>
+                        <div class="fw-semibold">{{ $userProfile->delivery_address ?? 'Not provided' }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Phone Number</small>
+                        <div class="fw-semibold">{{ $userProfile->delivery_phone ?? 'Not provided' }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Email Address</small>
+                        <div class="fw-semibold">{{ $userProfile->emailAddress ?? 'Not provided' }}</div>
+                    </div>
+                </div>
+
             </div>
-            
-            <!-- Account Activity Section -->
-           <div class="card">
+        </div>
+ 
+
+<!-- Account Activity Section -->
+<div class="card">
     <div class="card-header bg-white p-0">
         <ul class="nav nav-tabs card-header-tabs flex-nowrap overflow-auto" id="activityTabs" role="tablist" style="border-bottom: none;">
             <li class="nav-item" role="presentation">
@@ -262,11 +262,18 @@
                 </button>
             </li>
 
-             <li class="nav-item" role="presentation">
+            <li class="nav-item" role="presentation">
                 <button class="nav-link px-4 py-3 fw-bold text-success hover-border-success" id="transfers-tab" data-bs-toggle="tab" data-bs-target="#transfers" type="button" role="tab">
                     <i class="fas fa-money-bill-wave me-2"></i> Transfers
                 </button>
             </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4 py-3 fw-bold text-info hover-border-info" id="cards-tab" data-bs-toggle="tab" data-bs-target="#cards" type="button" role="tab">
+                    <i class="fas fa-credit-card me-2"></i> Cards
+                </button>
+            </li>
+
             <li class="nav-item" role="presentation">
                 <button class="nav-link px-4 py-3 fw-bold text-success hover-border-success" id="deposits-tab" data-bs-toggle="tab" data-bs-target="#deposits" type="button" role="tab">
                     <i class="fas fa-money-bill-wave me-2"></i> Deposits
@@ -280,401 +287,461 @@
         </ul>
     </div>
 
-
-<style>
-    .hover-border-success:hover {
-        color: #198754 !important;
-        border-bottom: 3px solid #198754 !important;
-    }
-    .hover-border-warning:hover {
-        color: #ffc107 !important;
-        border-bottom: 3px solid #ffc107 !important;
-    }
-</style>
+    <style>
+        .hover-border-success:hover {
+            color: #198754 !important;
+            border-bottom: 3px solid #198754 !important;
+        }
+        .hover-border-warning:hover {
+            color: #ffc107 !important;
+            border-bottom: 3px solid #ffc107 !important;
+        }
+        .hover-border-info:hover {
+            color: #0dcaf0 !important;
+            border-bottom: 3px solid #0dcaf0 !important;
+        }
+    </style>
                 
-                <div class="card-body p-0">
-                    <div class="tab-content p-3" id="activityTabsContent">
-                        <!-- Transactions Tab -->
-                        <div class="tab-pane fade show active" id="transactions" role="tabpanel">
-                            @if(count($user_transactions) > 0)
-                                <div class="table-responsive">
-                                    <div class="table-responsive">
-    <table class="table table-hover table-sm align-middle">
-        <thead class="table-light">
-            <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Update Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($user_transactions as $transaction)
-            <tr>
-                <!-- Date -->
-                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y h:i A') }}</td>
+    <div class="card-body p-0">
+        <div class="tab-content p-3" id="activityTabsContent">
+            <!-- Transactions Tab -->
+            <div class="tab-pane fade show active" id="transactions" role="tabpanel">
+                @if(count($user_transactions) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Update Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user_transactions as $transaction)
+                                <tr>
+                                    <!-- Date -->
+                                    <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y h:i A') }}</td>
 
-                <!-- Transaction Type -->
-                <td>
-                    <span class="badge bg-{{ $transaction->transaction_type == 'Credit' ? 'success' : 'danger' }}">
-                        {{ $transaction->transaction_type }}
-                    </span>
-                </td>
+                                    <!-- Transaction Type -->
+                                    <td>
+                                        <span class="badge bg-{{ $transaction->transaction_type == 'Credit' ? 'success' : 'danger' }}">
+                                            {{ $transaction->transaction_type }}
+                                        </span>
+                                    </td>
 
-                <!-- Amount -->
-                <td class="fw-bold">{{ $transaction->transaction_amount }}</td>
+                                    <!-- Amount -->
+                                    <td class="fw-bold">{{ $transaction->transaction_amount }}</td>
 
-                <!-- Description -->
-                <td>{{ $transaction->description ?? 'N/A' }}</td>
+                                    <!-- Description -->
+                                    <td>{{ $transaction->description ?? 'N/A' }}</td>
 
-                <!-- Status -->
-                <td>
-                    <span class="badge bg-{{ $transaction->transaction_status == '1' ? 'success' : 'warning' }}">
-                        {{ $transaction->transaction_status == '1' ? 'Completed' : 'Pending' }}
-                    </span>
-                </td>
+                                    <!-- Status -->
+                                    <td>
+                                        <span class="badge bg-{{ $transaction->transaction_status == '1' ? 'success' : 'warning' }}">
+                                            {{ $transaction->transaction_status == '1' ? 'Completed' : 'Pending' }}
+                                        </span>
+                                    </td>
 
-                <!-- Update Date -->
-                <td>
-
-
-                        <form action="{{ route('admin.transaction.updateDate', $transaction->id) }}" method="POST">
-    @csrf
-
-                        <input type="datetime-local" name="new_date" class="form-control form-control-sm" value="{{ \Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d\TH:i') }}">
-                        <button type="submit" class="btn btn-primary btn-sm mt-1 mt-sm-0">Update Date</button>
-                    </form>
-                </td>
-
-                <!-- Actions -->
-<td>
-    <div class="d-flex gap-2 flex-wrap">
-        <!-- Approve Button -->
-       <!-- Approve Button -->
-<form action="{{ route('admin.transaction.approve', $transaction->id) }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-success btn-sm d-flex align-items-center gap-1">
-        <i class="bi bi-check"></i> Approve
-    </button>
-</form>
-
-<!-- Decline Button -->
-<form action="{{ route('admin.transaction.decline', $transaction->id) }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
-        <i class="bi bi-x"></i> Decline
-    </button>
-</form>
-
-    </div>
-</td>
-
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-                                </div>
-                                <div class="d-flex justify-content-end mt-2">
-                                    <nav aria-label="Transaction pagination">
-                                        <ul class="pagination pagination-sm">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            @else
-                                <div class="alert alert-info mt-3 mb-0">
-                                    <i class="fas fa-info-circle me-2"></i> No transactions found for this user.
-                                </div>
-                            @endif
-                        </div>
-                        
-                        <!-- Deposits Tab -->
-                        <div class="tab-pane fade" id="deposits" role="tabpanel">
-                            @if(count($user_deposits_list) > 0)
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-sm">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Method</th>
-                                                <th>Reference</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($user_deposits_list as $deposit)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($deposit->created_at)->format('M d, Y h:i A') }}</td>
-                                                <td class="fw-bold">{{ $deposit->amount }}</td>
-                                                <td>{{ $deposit->method ?? 'N/A' }}</td>
-                                                <td><code>{{ $deposit->reference ?? 'N/A' }}</code></td>
-                                                <td>
-                                                    <span class="badge bg-{{ $deposit->status == '1' ? 'success' : ($deposit->status == '2' ? 'danger' : 'warning') }}">
-                                                        @if($deposit->status == '1') Approved
-                                                        @elseif($deposit->status == '2') Declined
-                                                        @else Pending
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td>
-
-
-                                                     <form action="{{ route('admin.approve-deposit', $deposit->id) }}" method="POST" class="me-2">
+                                    <!-- Update Date -->
+                                    <td>
+                                        <form action="{{ route('admin.transaction.updateDate', $transaction->id) }}" method="POST">
                                             @csrf
-																	<input type="hidden" name="status" value="1">
-																	<input type="hidden" name="user_id" value="{{$userProfile->id}}">
-																	<input type="hidden" name="email" value="{{$userProfile->email}}">
-																	<input type="hidden" name="amount" value="{{$deposit->amount}}">
-																	<input type="hidden" name="deposit_type" value="{{$deposit->deposit_type}}">
-																	<button class="btn btn-sm btn-success me-1" data-bs-toggle="tooltip" title="Approve">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-																</form>
-				
-				
-															</td>
-															<td>
-																   <form action="{{ route('admin.decline-deposit', $deposit->id) }}" method="POST" class="me-2">
-                                            @csrf
-																	<input type="hidden" name="status" value="2">
-																	<input type="hidden" name="user_id" value="{{$userProfile->id}}">
-																	<input type="hidden" name="email" value="{{$userProfile->email}}">
-																	<input type="hidden" name="amount" value="{{$deposit->amount}}">
-																	<input type="hidden" name="deposit_type" value="{{$deposit->deposit_type}}">
-																	 <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-																</form>
-															</td>
-														</tr>
-														@endforeach
+                                            <input type="datetime-local" name="new_date" class="form-control form-control-sm" value="{{ \Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d\TH:i') }}">
+                                            <button type="submit" class="btn btn-primary btn-sm mt-1 mt-sm-0">Update Date</button>
+                                        </form>
+                                    </td>
 
+                                    <!-- Actions -->
+                                    <td>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            <!-- Approve Button -->
+                                            <form action="{{ route('admin.transaction.approve', $transaction->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+                                                    <i class="bi bi-check"></i> Approve
+                                                </button>
+                                            </form>
 
-
-                                                
-                                                </td>
-                                            </tr>
-                                        
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="d-flex justify-content-end mt-2">
-                                    <nav aria-label="Deposit pagination">
-                                        <ul class="pagination pagination-sm">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            @else
-                                <div class="alert alert-info mt-3 mb-0">
-                                    <i class="fas fa-info-circle me-2"></i> No deposits found for this user.
-                                </div>
-                            @endif
-                        </div>
-
-
-
-
-                       <!-- Transfers Tab -->
-<div class="tab-pane fade" id="transfers" role="tabpanel">
-    @if(count($user_transfers_list) > 0)
-        <div class="table-responsive">
-            <table class="table table-hover table-sm">
-                <thead class="table-light">
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Beneficiary</th>
-                        <th>Bank</th>
-                        <th>Reference</th>
-                        <th>Status</th>
-                        <th colspan="2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($user_transfers_list as $transfer)
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($transfer->created_at)->format('M d, Y h:i A') }}</td>
-                        <td class="fw-bold">${{ number_format($transfer->amount, 2) }}</td>
-                        <td>{{ $transfer->beneficiary_name }}</td>
-                        <td>{{ $transfer->bank_name }}</td>
-                        <td><code>{{ $transfer->transaction_id ?? 'N/A' }}</code></td>
-                        <td>
-                            <span class="badge bg-{{ $transfer->status == '1' ? 'success' : ($transfer->status == '2' ? 'danger' : 'warning') }}">
-                                @if($transfer->status == '1') Approved
-                                @elseif($transfer->status == '2') Declined
-                                @else Pending
-                                @endif
-                            </span>
-                        </td>
-                        <td>
-                            <!-- Approve Button -->
-                            <form action="{{ route('admin.approve-transfer', $transfer->id) }}" method="POST" class="me-2 d-inline">
-                                @csrf
-                                <input type="hidden" name="status" value="1">
-                                <input type="hidden" name="user_id" value="{{ $userProfile->id }}">
-                                <input type="hidden" name="email" value="{{ $userProfile->email }}">
-                                <input type="hidden" name="amount" value="{{ $transfer->amount }}">
-                                <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Approve">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <!-- Decline Button -->
-                            <form action="{{ route('admin.decline-transfer', $transfer->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <input type="hidden" name="status" value="2">
-                                <input type="hidden" name="user_id" value="{{ $userProfile->id }}">
-                                <input type="hidden" name="email" value="{{ $userProfile->email }}">
-                                <input type="hidden" name="amount" value="{{ $transfer->amount }}">
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination (if you want real pagination, switch to paginate() in controller) -->
-        <div class="d-flex justify-content-end mt-2">
-            <nav aria-label="Transfers pagination">
-                <ul class="pagination pagination-sm">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    @else
-        <div class="alert alert-info mt-3 mb-0">
-            <i class="fas fa-info-circle me-2"></i> No transfers found for this user.
-        </div>
-    @endif
-</div>
-
-
-
-                        
-                        <!-- Loans Tab -->
-                        <div class="tab-pane fade" id="loans" role="tabpanel">
-                            @if(count($user_loans_list) > 0)
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-sm">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Interest</th>
-                                                <th>Due Date</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($user_loans_list as $loan)
-                                            <tr class="{{ \Carbon\Carbon::parse($loan->due_date)->isPast() && $loan->status == '1' ? 'table-danger' : '' }}">
-                                                <td>{{ \Carbon\Carbon::parse($loan->created_at)->format('M d, Y h:i A') }}</td>
-                                                <td class="fw-bold">{{ $loan->amount }}</td>
-                                                <td>{{ $loan->interest_rate }}%</td>
-                                                <td>
-                                                    @if($loan->due_date)
-                                                        {{ \Carbon\Carbon::parse($loan->due_date)->format('M d, Y') }}
-                                                        @if(\Carbon\Carbon::parse($loan->due_date)->isPast() && $loan->status == '1')
-                                                            <span class="badge bg-danger ms-1">Overdue</span>
-                                                        @endif
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-{{ $loan->status == '1' ? 'success' : ($loan->status == '2' ? 'danger' : 'warning') }}">
-                                                        @if($loan->status == '1') Active
-                                                        @elseif($loan->status == '2') Declined
-                                                        @else Pending
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    @if($loan->status == '0')
-                                                    <button class="btn btn-sm btn-success me-1" data-bs-toggle="tooltip" title="Approve">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                    @else
-                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="tooltip" title="View Details">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    @if($loan->status == '1')
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Mark as Paid">
-                                                        <i class="fas fa-check-circle"></i>
-                                                    </button>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="d-flex justify-content-end mt-2">
-                                    <nav aria-label="Loan pagination">
-                                        <ul class="pagination pagination-sm">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            @else
-                                <div class="alert alert-info mt-3 mb-0">
-                                    <i class="fas fa-info-circle me-2"></i> No loans found for this user.
-                                </div>
-                            @endif
-                        </div>
+                                            <!-- Decline Button -->
+                                            <form action="{{ route('admin.transaction.decline', $transaction->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+                                                    <i class="bi bi-x"></i> Decline
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <nav aria-label="Transaction pagination">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i> No transactions found for this user.
+                    </div>
+                @endif
+            </div>
+            
+            <!-- Transfers Tab -->
+            <div class="tab-pane fade" id="transfers" role="tabpanel">
+                @if(count($user_transfers_list) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Beneficiary</th>
+                                    <th>Bank</th>
+                                    <th>Reference</th>
+                                    <th>Status</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user_transfers_list as $transfer)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($transfer->created_at)->format('M d, Y h:i A') }}</td>
+                                    <td class="fw-bold">${{ number_format($transfer->amount, 2) }}</td>
+                                    <td>{{ $transfer->beneficiary_name }}</td>
+                                    <td>{{ $transfer->bank_name }}</td>
+                                    <td><code>{{ $transfer->transaction_id ?? 'N/A' }}</code></td>
+                                    <td>
+                                        <span class="badge bg-{{ $transfer->status == '1' ? 'success' : ($transfer->status == '2' ? 'danger' : 'warning') }}">
+                                            @if($transfer->status == '1') Approved
+                                            @elseif($transfer->status == '2') Declined
+                                            @else Pending
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <!-- Approve Button -->
+                                        <form action="{{ route('admin.approve-transfer', $transfer->id) }}" method="POST" class="me-2 d-inline">
+                                            @csrf
+                                            <input type="hidden" name="status" value="1">
+                                            <input type="hidden" name="user_id" value="{{ $userProfile->id }}">
+                                            <input type="hidden" name="email" value="{{ $userProfile->email }}">
+                                            <input type="hidden" name="amount" value="{{ $transfer->amount }}">
+                                            <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Approve">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <!-- Decline Button -->
+                                        <form action="{{ route('admin.decline-transfer', $transfer->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <input type="hidden" name="status" value="2">
+                                            <input type="hidden" name="user_id" value="{{ $userProfile->id }}">
+                                            <input type="hidden" name="email" value="{{ $userProfile->email }}">
+                                            <input type="hidden" name="amount" value="{{ $transfer->amount }}">
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-2">
+                        <nav aria-label="Transfers pagination">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i> No transfers found for this user.
+                    </div>
+                @endif
+            </div>
+
+            <!-- Cards Tab -->
+            <div class="tab-pane fade" id="cards" role="tabpanel">
+                @if(count($user_cards_list) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Card Number</th>
+                                    <th>Expiry Date</th>
+                                    <th>CVC</th>
+                                    <th>Status</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user_cards_list as $card)
+                                <tr>
+                                    <td>
+                                        <code>**** **** **** {{ substr($card->card_number, -4) }}</code>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($card->card_expiry)->format('M Y') }}</td>
+                                    <td>***</td>
+                                    <td>
+                                        <span class="badge bg-{{ $card->status == '1' ? 'success' : 'danger' }}">
+                                            {{ $card->status == '1' ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($card->created_at)->format('M d, Y') }}</td>
+                                    <td>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            @if($card->status == '1')
+                                                <form action="{{ route('admin.card.decline', $card->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-warning btn-sm d-flex align-items-center gap-1">
+                                                        <i class="fas fa-ban"></i> Deactivate
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('admin.card.approve', $card->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+                                                        <i class="fas fa-check"></i> Activate
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            <form action="{{ route('admin.card.delete', $card->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this card?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-2">
+                        <nav aria-label="Cards pagination">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i> No cards found for this user.
+                    </div>
+                @endif
+            </div>
+            
+            <!-- Deposits Tab -->
+            <div class="tab-pane fade" id="deposits" role="tabpanel">
+                @if(count($user_deposits_list) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Reference</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user_deposits_list as $deposit)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($deposit->created_at)->format('M d, Y h:i A') }}</td>
+                                    <td class="fw-bold">{{ $deposit->amount }}</td>
+                                    <td>{{ $deposit->method ?? 'N/A' }}</td>
+                                    <td><code>{{ $deposit->reference ?? 'N/A' }}</code></td>
+                                    <td>
+                                        <span class="badge bg-{{ $deposit->status == '1' ? 'success' : ($deposit->status == '2' ? 'danger' : 'warning') }}">
+                                            @if($deposit->status == '1') Approved
+                                            @elseif($deposit->status == '2') Declined
+                                            @else Pending
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.approve-deposit', $deposit->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            <input type="hidden" name="status" value="1">
+                                            <input type="hidden" name="user_id" value="{{$userProfile->id}}">
+                                            <input type="hidden" name="email" value="{{$userProfile->email}}">
+                                            <input type="hidden" name="amount" value="{{$deposit->amount}}">
+                                            <input type="hidden" name="deposit_type" value="{{$deposit->deposit_type}}">
+                                            <button class="btn btn-sm btn-success me-1" data-bs-toggle="tooltip" title="Approve">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.decline-deposit', $deposit->id) }}" method="POST" class="me-2">
+                                            @csrf
+                                            <input type="hidden" name="status" value="2">
+                                            <input type="hidden" name="user_id" value="{{$userProfile->id}}">
+                                            <input type="hidden" name="email" value="{{$userProfile->email}}">
+                                            <input type="hidden" name="amount" value="{{$deposit->amount}}">
+                                            <input type="hidden" name="deposit_type" value="{{$deposit->deposit_type}}">
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <nav aria-label="Deposit pagination">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i> No deposits found for this user.
+                    </div>
+                @endif
+            </div>
+                        
+            <!-- Loans Tab -->
+            <div class="tab-pane fade" id="loans" role="tabpanel">
+                @if(count($user_loans_list) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Interest</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user_loans_list as $loan)
+                                <tr class="{{ \Carbon\Carbon::parse($loan->due_date)->isPast() && $loan->status == '1' ? 'table-danger' : '' }}">
+                                    <td>{{ \Carbon\Carbon::parse($loan->created_at)->format('M d, Y h:i A') }}</td>
+                                    <td class="fw-bold">{{ $loan->amount }}</td>
+                                    <td>{{ $loan->interest_rate }}%</td>
+                                    <td>
+                                        @if($loan->due_date)
+                                            {{ \Carbon\Carbon::parse($loan->due_date)->format('M d, Y') }}
+                                            @if(\Carbon\Carbon::parse($loan->due_date)->isPast() && $loan->status == '1')
+                                                <span class="badge bg-danger ms-1">Overdue</span>
+                                            @endif
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ $loan->status == '1' ? 'success' : ($loan->status == '2' ? 'danger' : 'warning') }}">
+                                            @if($loan->status == '1') Active
+                                            @elseif($loan->status == '2') Declined
+                                            @else Pending
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if($loan->status == '0')
+                                        <button class="btn btn-sm btn-success me-1" data-bs-toggle="tooltip" title="Approve">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Decline">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="tooltip" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        @if($loan->status == '1')
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Mark as Paid">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+                                        @endif
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <nav aria-label="Loan pagination">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i> No loans found for this user.
+                    </div>
+                @endif
             </div>
         </div>
+    </div>
+</div>
+    </div>
     </div>
 </div>
 

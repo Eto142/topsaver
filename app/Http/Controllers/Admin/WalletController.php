@@ -32,7 +32,7 @@ class WalletController extends Controller
 
         Wallet::create($validated);
 
-        return redirect()->back()->with('success', 'Payment method added successfully!');
+        return redirect()->back()->with('status', 'Payment method added successfully!');
     }
 
  
@@ -42,7 +42,7 @@ class WalletController extends Controller
         $wallet = Wallet::findOrFail($id);
         $wallet->delete();
 
-        return redirect()->back()->with('success', 'Payment method deleted successfully.');
+        return redirect()->back()->with('status', 'Payment method deleted successfully.');
     }
 
     // Update Wallet
@@ -78,7 +78,7 @@ class WalletController extends Controller
             'cashapp_tag' => $request->cashapp_tag,
         ]);
 
-        return redirect()->back()->with('success', 'Payment method updated successfully.');
+        return redirect()->back()->with('status', 'Payment method updated successfully.');
     }
 }
 

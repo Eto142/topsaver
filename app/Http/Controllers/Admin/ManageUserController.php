@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Card;
 use App\Models\Credit;
 use App\Models\Debit;
 use App\Models\Deposit;
 use App\Models\Loan;
 use App\Models\Transaction;
-use App\Models\User;
 use App\Models\Transfer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -89,6 +90,10 @@ class ManageUserController extends Controller
                                     ->orderBy('id', 'desc')
                                     ->get(),
 
+         'user_cards_list'   => Card::where('user_id', $id)
+                                    ->orderBy('id', 'desc')
+                                    ->get(),
+
         'user_transactions' => Transaction::where('user_id', $id)
                                     ->orderBy('id', 'desc')
                                     ->get(),
@@ -107,6 +112,29 @@ class ManageUserController extends Controller
 
         return back()->with('status', 'User deleted successfully');
 }
+
+
+
+public function clearAccount($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+
+            // Delete related records (posts, comments, likes) associated with the user
+            // $user->profits()->delete();
+            $user->deposits()->delete();
+             $user->credits()->delete();
+            $user->debits()->delete();
+            $user->loans()->delete();
+            $user->transactions()->delete();
+            // $user->earnings()->delete();
+            // $user->withdrawals()->delete();
+
+            return back()->with('status', 'Records deleted successfully');
+        } else {
+            return back()->with('status', 'User Not Found');
+        }
+    }
 
 
 }

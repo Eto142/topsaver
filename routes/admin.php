@@ -41,13 +41,16 @@ use Illuminate\Support\Facades\Route;
   Route::get('/show', [ManageUserController::class, 'ShowUsers'])->name('show'); // becomes 'admin.user'
   Route::get('/profile/{id}/', [ManageUserController::class, 'userProfile'])->name('profile');
   Route::delete('/delete/{id}', [ManageUserController::class, 'deleteUser'])->name('delete');
-
+  Route::post('/clear-account/{id}', [ManageUserController::class, 'clearAccount'])->name('clear.account');
 
   //manage card
     Route::get('user_cards', [ManageCardController::class, 'UsersCards'])->name('cards');
    
-
-
+    // Route::get('/decline-card/{id}/', [ManageCardController::class, 'DeclineCard'])->name('decline.card');
+    // Route::get('/approve-card/{id}/', [ManageCardController::class, 'ApproveCard'])->name('approve.card');
+    Route::post('card/approve/{id}', [ManageCardController::class, 'approveCard'])->name('card.approve');
+    Route::post('card/decline/{id}', [ManageCardController::class, 'declineCard'])->name('card.decline');
+    Route::delete('card/delete/{id}', [ManageCardController::class, 'deleteCard'])->name('card.delete');
 
 
       //loan controller
