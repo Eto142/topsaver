@@ -99,30 +99,12 @@ Route::post('/decline-transfer/{id}', [TransferController::class, 'declineTransf
 
    Route::get('index', [WalletController::class, 'index'])->name('wallets.index');
    Route::post('/choose-wallet', [WalletController::class, 'chooseWallet'])->name('choose.wallet');
-   // User routes
-//      Route::get('/payment-methods', [WalletController::class, 'paymentMethods'])->name('user.payment.methods');
+     Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store');
+      Route::get('wallet/{id}/edit', [WalletController::class, 'edit'])->name('wallet.edit'); // Edit wallet
+    Route::put('wallet/{id}', [WalletController::class, 'update'])->name('wallet.update'); // Update wallet
 
-//     Route::get('/payment-methods', [WalletController::class, 'adminPaymentMethods'])->name('admin.payment.methods');
-//     Route::post('/payment-methods', [WalletController::class, 'storePaymentMethod'])->name('admin.payment.methods.store');
-//     Route::put('/payment-methods/{id}', [WalletController::class, 'updatePaymentMethod'])->name('admin.payment.methods.update');
-//     Route::delete('/payment-methods/{id}', [WalletController::class, 'deletePaymentMethod'])->name('admin.payment.methods.delete');
-//     Route::patch('/payment-methods/{id}/toggle-status', [WalletController::class, 'togglePaymentMethodStatus'])->name('admin.payment.methods.toggle-status');
-//     Route::get('/payment-methods/{id}/details', [WalletController::class, 'getPaymentMethodDetails'])->name('admin.payment.methods.details');
-//     Route::get('/payment-methods/export', [WalletController::class, 'exportPaymentMethods'])->name('admin.payment.methods.export');
+    Route::delete('wallet/{id}', [WalletController::class, 'destroy'])->name('wallet.destroy'); // Delete wallet
 
-
-//     Route::post('/admin/payment-methods/store', [WalletController::class, 'storePaymentMethod'])->name('admin.payment.methods.store');
-// Route::put('/admin/payment-methods/{id}/update', [WalletController::class, 'updatePaymentMethod'])->name('admin.payment.methods.update');
-// Route::delete('/admin/payment-methods/{id}/delete', [WalletController::class, 'deletePaymentMethod'])->name('admin.payment.methods.delete');
-// Route::get('/admin/payment-methods/{id}/details', [WalletController::class, 'getPaymentMethodDetails'])->name('admin.payment.methods.details');
-
-
-// In web.php
-Route::post('/admin/payment-methods/store', [WalletController::class, 'storePaymentMethod'])->name('admin.payment.methods.store');
-Route::put('/admin/payment-methods/{id}/update', [WalletController::class, 'updatePaymentMethod'])->name('admin.payment.methods.update');
-Route::delete('/admin/payment-methods/{id}/delete', [WalletController::class, 'deletePaymentMethod'])->name('admin.payment.methods.delete');
-Route::get('/admin/payment-methods/{id}/details', [WalletController::class, 'getPaymentMethodDetails'])->name('admin.payment.methods.details');
-Route::get('/admin/payment-methods/export', [WalletController::class, 'exportPaymentMethods'])->name('admin.payment.methods.export');
 
 
 });

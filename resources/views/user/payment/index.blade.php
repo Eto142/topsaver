@@ -572,449 +572,319 @@
             <!-- Header Section -->
             <div class="user-header">
                 <div>
-                    <h2>Deposit Methods</h2>
-                    <p>Send payments to any of these accounts to fund your wallet</p>
-                </div>
+                    <h2>Payment Methods</h2>
+                    <p>Send payments to any of these accounts to activate withdrawal code                </div>
                 <div class="balance-display">
-                    <div class="label">Current Balance</div>
-                    <div class="amount">{{ Auth::user()->currency }}{{ number_format($balance, 2, '.', ',') }}</div>
+                    <div class="label">Account Balance</div>
+                    <div class="amount" style="color:white">{{ Auth::user()->currency ?? '$' }}{{ number_format($balance ?? 0, 2, '.', ',') }}</div>
                 </div>
             </div>
 
             <!-- Payment Methods Grid -->
             <div class="payment-methods-grid">
-                <!-- Cryptocurrency Method (Most Popular) -->
-                <div class="payment-method-card">
-                    <div class="popular-badge">Most Popular</div>
-                    <div class="payment-method-header">
-                        <div class="payment-method-info">
-                            <div class="payment-icon" style="background: linear-gradient(135deg, #F7931A 0%, #E2780C 100%);">
-                                <i class="fab fa-bitcoin"></i>
-                            </div>
-                            <div class="payment-details">
-                                <h3>Cryptocurrency</h3>
-                                <p>Send Bitcoin, Ethereum, or USDT to our wallets</p>
-                            </div>
-                        </div>
-                        <div class="payment-status">
-                            <span class="status-badge status-active">Available</span>
-                        </div>
-                    </div>
-                    <div class="payment-method-body">
-                        <div class="payment-specs">
-                            <div class="spec-item">
-                                <span class="spec-label">Processing Time</span>
-                                <span class="spec-value">2-24 hours</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Minimum Deposit</span>
-                                <span class="spec-value">$25</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Network Fee</span>
-                                <span class="spec-value">User pays</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Daily Limit</span>
-                                <span class="spec-value">No limit</span>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-details-section">
-                            <div class="details-title">
-                                <i class="fas fa-wallet"></i>
-                                Send Crypto To These Wallets
-                            </div>
-                            <div class="wallet-addresses">
-                                <div class="wallet-item">
-                                    <span class="wallet-type">Bitcoin (BTC)</span>
-                                    <span class="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span>
-                                    <button class="copy-btn" data-address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+                @forelse($wallets as $index => $wallet)
+                    @if($wallet->status == 'active')
+                        <div class="payment-method-card">
+                            @if($index == 0)
+                                <div class="popular-badge">Most Popular</div>
+                            @endif
+                            
+                            <div class="payment-method-header">
+                                <div class="payment-method-info">
+                                    <div class="payment-icon" 
+                                         style="background: 
+                                         {{ $wallet->method == 'crypto' ? 'linear-gradient(135deg, #F7931A 0%, #E2780C 100%)' : 
+                                            ($wallet->method == 'bank' ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' : 
+                                            'linear-gradient(135deg, #00D64B 0%, #00B83C 100%)') }};">
+                                        @if($wallet->method == 'crypto')
+                                            <i class="fab fa-bitcoin"></i>
+                                        @elseif($wallet->method == 'bank')
+                                            <i class="fas fa-university"></i>
+                                        @else
+                                            <i class="fas fa-dollar-sign"></i>
+                                        @endif
+                                    </div>
+                                    <div class="payment-details">
+                                        <h3>{{ ucfirst($wallet->method) }}</h3>
+                                        <p>
+                                            @if($wallet->method == 'crypto')
+                                                Send Bitcoin, Ethereum, or USDT to our wallets
+                                            @elseif($wallet->method == 'bank')
+                                                Send wire transfers or ACH payments
+                                            @else
+                                                Send payments to our Cash App account
+                                            @endif
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="wallet-item">
-                                    <span class="wallet-type">Ethereum (ETH)</span>
-                                    <span class="wallet-address">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span>
-                                    <button class="copy-btn" data-address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
-                                </div>
-                                <div class="wallet-item">
-                                    <span class="wallet-type">USDT (ERC20)</span>
-                                    <span class="wallet-address">0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359</span>
-                                    <button class="copy-btn" data-address="0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+                                <div class="payment-status">
+                                    <span class="status-badge status-active">Available</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="deposit-instructions">
-                            <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
-                            <ul class="instructions-list">
-                                <li>
-                                    <div class="step-number">1</div>
-                                    <div>Send only the supported cryptocurrencies to these addresses</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">2</div>
-                                    <div>Include your User ID in the memo/description field when sending</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">3</div>
-                                    <div>Funds will be credited after 2 network confirmations</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">4</div>
-                                    <div>Contact support if deposit doesn't appear within 24 hours</div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <ul class="payment-features">
-                            <li><i class="fas fa-check"></i> Support for BTC, ETH, USDT</li>
-                            <li><i class="fas fa-check"></i> No deposit limits</li>
-                            <li><i class="fas fa-check"></i> Lower fees for large amounts</li>
-                            <li><i class="fas fa-check"></i> Blockchain transparency</li>
-                        </ul>
-                    </div>
-                    <div class="payment-method-footer">
-                        <div class="processing-info">
-                            Processing depends on network congestion
-                        </div>
-                        <div class="method-actions">
-                            <button class="btn-details">
-                                <i class="fas fa-info-circle"></i>
-                                Details
-                            </button>
-                            <button class="btn-deposit">
-                                <i class="fas fa-arrow-right"></i>
-                                Make Deposit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cash App Method -->
-                <div class="payment-method-card">
-                    <div class="payment-method-header">
-                        <div class="payment-method-info">
-                            <div class="payment-icon" style="background: linear-gradient(135deg, #00D64B 0%, #00B83C 100%);">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <div class="payment-details">
-                                <h3>Cash App</h3>
-                                <p>Send payments to our Cash App account</p>
-                            </div>
-                        </div>
-                        <div class="payment-status">
-                            <span class="status-badge status-active">Available</span>
-                        </div>
-                    </div>
-                    <div class="payment-method-body">
-                        <div class="payment-specs">
-                            <div class="spec-item">
-                                <span class="spec-label">Processing Time</span>
-                                <span class="spec-value">Instant</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Minimum Deposit</span>
-                                <span class="spec-value">$10</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transaction Fee</span>
-                                <span class="spec-value">0% (Free)</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Daily Limit</span>
-                                <span class="spec-value">$1,000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-details-section">
-                            <div class="details-title">
-                                <i class="fas fa-tag"></i>
-                                Send To This Cash App Tag
-                            </div>
-                            <div class="cashapp-tag">
-                                $TopSaverTBC
-                            </div>
-                            <div style="text-align: center; margin-top: 10px;">
-                                <button class="copy-btn" data-address="$TopSaverTBC" style="padding: 8px 16px;">
-                                    <i class="fas fa-copy"></i> Copy Cash Tag
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="deposit-instructions">
-                            <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
-                            <ul class="instructions-list">
-                                <li>
-                                    <div class="step-number">1</div>
-                                    <div>Send payment to $TopSaverTBC on Cash App</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">2</div>
-                                    <div>Include your User ID in the "For" section</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">3</div>
-                                    <div>Screenshot the completed transaction</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">4</div>
-                                    <div>Submit the screenshot in the deposit form</div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <ul class="payment-features">
-                            <li><i class="fas fa-check"></i> Instant processing</li>
-                            <li><i class="fas fa-check"></i> $1,000 daily deposit limit</li>
-                            <li><i class="fas fa-check"></i> Available 24/7 including weekends</li>
-                            <li><i class="fas fa-check"></i> No transaction fees</li>
-                        </ul>
-                    </div>
-                    <div class="payment-method-footer">
-                        <div class="processing-info">
-                            Funds credited instantly after verification
-                        </div>
-                        <div class="method-actions">
-                            <button class="btn-details">
-                                <i class="fas fa-info-circle"></i>
-                                Details
-                            </button>
-                            <button class="btn-deposit">
-                                <i class="fas fa-arrow-right"></i>
-                                Make Deposit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bank Transfer Method -->
-                <div class="payment-method-card">
-                    <div class="payment-method-header">
-                        <div class="payment-method-info">
-                            <div class="payment-icon" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">
-                                <i class="fas fa-university"></i>
-                            </div>
-                            <div class="payment-details">
-                                <h3>Bank Transfer</h3>
-                                <p>Send wire transfers or ACH payments</p>
-                            </div>
-                        </div>
-                        <div class="payment-status">
-                            <span class="status-badge status-active">Available</span>
-                        </div>
-                    </div>
-                    <div class="payment-method-body">
-                        <div class="payment-specs">
-                            <div class="spec-item">
-                                <span class="spec-label">Processing Time</span>
-                                <span class="spec-value">2-3 business days</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Minimum Deposit</span>
-                                <span class="spec-value">$50</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transaction Fee</span>
-                                <span class="spec-value">$0 (we cover fees)</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Daily Limit</span>
-                                <span class="spec-value">$10,000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-details-section">
-                            <div class="details-title">
-                                <i class="fas fa-building"></i>
-                                Send To These Bank Details
-                            </div>
-                            <div class="bank-details">
-                                <div class="bank-item">
-                                    <span class="bank-field">Bank Name</span>
-                                    <span class="bank-value">Chase Bank</span>
-                                    <button class="copy-btn" data-address="Chase Bank">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+                            
+                            <div class="payment-method-body">
+                                <div class="payment-specs">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Processing Time</span>
+                                        <span class="spec-value">
+                                            @if($wallet->method == 'crypto')
+                                                2-24 hours
+                                            @elseif($wallet->method == 'bank')
+                                                2-3 business days
+                                            @else
+                                                Instant
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Minimum Deposit</span>
+                                        <span class="spec-value">
+                                            @if($wallet->method == 'crypto')
+                                                $25
+                                            @elseif($wallet->method == 'bank')
+                                                $50
+                                            @else
+                                                $10
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Transaction Fee</span>
+                                        <span class="spec-value">
+                                            @if($wallet->method == 'crypto')
+                                                User pays
+                                            @elseif($wallet->method == 'bank')
+                                                $0 (we cover fees)
+                                            @else
+                                                0% (Free)
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Daily Limit</span>
+                                        <span class="spec-value">
+                                            @if($wallet->method == 'crypto')
+                                                No limit
+                                            @elseif($wallet->method == 'bank')
+                                                $10,000
+                                            @else
+                                                $1,000
+                                            @endif
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="bank-item">
-                                    <span class="bank-field">Account Name</span>
-                                    <span class="bank-value">TopSaver TBC Holdings</span>
-                                    <button class="copy-btn" data-address="TopSaver TBC Holdings">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+                                
+                                <div class="payment-details-section">
+                                    <div class="details-title">
+                                        <i class="fas fa-wallet"></i>
+                                        @if($wallet->method == 'crypto')
+                                            Send Crypto To These Wallets
+                                        @elseif($wallet->method == 'bank')
+                                            Send To These Bank Details
+                                        @else
+                                            Send To This Cash App Tag
+                                        @endif
+                                    </div>
+                                    
+                                    @if($wallet->method == 'crypto')
+                                        <div class="wallet-addresses">
+                                            @if($wallet->bitcoin_address)
+                                                <div class="wallet-item">
+                                                    <span class="wallet-type">Bitcoin (BTC)</span>
+                                                    <span class="wallet-address">{{ $wallet->bitcoin_address }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->bitcoin_address }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->ethereum_address)
+                                                <div class="wallet-item">
+                                                    <span class="wallet-type">Ethereum (ETH)</span>
+                                                    <span class="wallet-address">{{ $wallet->ethereum_address }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->ethereum_address }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->usdt_address)
+                                                <div class="wallet-item">
+                                                    <span class="wallet-type">USDT (ERC20)</span>
+                                                    <span class="wallet-address">{{ $wallet->usdt_address }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->usdt_address }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @elseif($wallet->method == 'bank')
+                                        <div class="bank-details">
+                                            @if($wallet->bank_name)
+                                                <div class="bank-item">
+                                                    <span class="bank-field">Bank Name</span>
+                                                    <span class="bank-value">{{ $wallet->bank_name }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->bank_name }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->account_name)
+                                                <div class="bank-item">
+                                                    <span class="bank-field">Account Name</span>
+                                                    <span class="bank-value">{{ $wallet->account_name }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->account_name }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->account_number)
+                                                <div class="bank-item">
+                                                    <span class="bank-field">Account Number</span>
+                                                    <span class="bank-value">{{ $wallet->account_number }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->account_number }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->iban)
+                                                <div class="bank-item">
+                                                    <span class="bank-field">IBAN</span>
+                                                    <span class="bank-value">{{ $wallet->iban }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->iban }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($wallet->swift)
+                                                <div class="bank-item">
+                                                    <span class="bank-field">SWIFT Code</span>
+                                                    <span class="bank-value">{{ $wallet->swift }}</span>
+                                                    <button class="copy-btn" data-address="{{ $wallet->swift }}">
+                                                        <i class="fas fa-copy"></i> Copy
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div class="cashapp-tag">
+                                            {{ $wallet->cashapp_tag ?? 'Cash App Tag' }}
+                                        </div>
+                                        <div style="text-align: center; margin-top: 10px;">
+                                            <button class="copy-btn" data-address="{{ $wallet->cashapp_tag ?? '' }}" style="padding: 8px 16px;">
+                                                <i class="fas fa-copy"></i> Copy Cash Tag
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="bank-item">
-                                    <span class="bank-field">Account Number</span>
-                                    <span class="bank-value">7531902468</span>
-                                    <button class="copy-btn" data-address="7531902468">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+
+                                <div class="deposit-instructions">
+                                    <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
+                                    <ul class="instructions-list">
+                                        @if($wallet->method == 'crypto')
+                                            <li>
+                                                <div class="step-number">1</div>
+                                                <div>Send only the supported cryptocurrencies to these addresses</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">2</div>
+                                                <div>Include your User ID in the memo/description field when sending</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">3</div>
+                                                <div>Funds will be credited after 2 network confirmations</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">4</div>
+                                                <div>Contact support if deposit doesn't appear within 24 hours</div>
+                                            </li>
+                                        @elseif($wallet->method == 'bank')
+                                            <li>
+                                                <div class="step-number">1</div>
+                                                <div>Use exact bank details provided above</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">2</div>
+                                                <div>Include your User ID in transfer description</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">3</div>
+                                                <div>Keep your bank receipt/confirmation</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">4</div>
+                                                <div>Email receipt to support@topsavertbc.online</div>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <div class="step-number">1</div>
+                                                <div>Send payment to {{ $wallet->cashapp_tag ?? 'Cash App Tag' }} on Cash App</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">2</div>
+                                                <div>Include your User ID in the "For" section</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">3</div>
+                                                <div>Screenshot the completed transaction</div>
+                                            </li>
+                                            <li>
+                                                <div class="step-number">4</div>
+                                                <div>Submit the screenshot in the deposit form</div>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </div>
-                                <div class="bank-item">
-                                    <span class="bank-field">Routing Number</span>
-                                    <span class="bank-value">021000021</span>
-                                    <button class="copy-btn" data-address="021000021">
-                                        <i class="fas fa-copy"></i> Copy
-                                    </button>
+
+                                <ul class="payment-features">
+                                    @if($wallet->method == 'crypto')
+                                        <li><i class="fas fa-check"></i> Support for BTC, ETH, USDT</li>
+                                        <li><i class="fas fa-check"></i> No deposit limits</li>
+                                        <li><i class="fas fa-check"></i> Lower fees for large amounts</li>
+                                        <li><i class="fas fa-check"></i> Blockchain transparency</li>
+                                    @elseif($wallet->method == 'bank')
+                                        <li><i class="fas fa-check"></i> Direct from your bank account</li>
+                                        {{-- <li><i class="fas fa-check"></i> $10,000 daily deposit limit</li> --}}
+                                        <li><i class="fas fa-check"></i> Full transaction audit trail</li>
+                                        <li><i class="fas fa-check"></i> Bank-level security</li>
+                                    @else
+                                        <li><i class="fas fa-check"></i> Instant processing</li>
+                                        {{-- <li><i class="fas fa-check"></i> $1,000 daily deposit limit</li> --}}
+                                        <li><i class="fas fa-check"></i> Available 24/7 including weekends</li>
+                                        <li><i class="fas fa-check"></i> No transaction fees</li>
+                                    @endif
+                                </ul>
+                            </div>
+                            
+                            <div class="payment-method-footer">
+                                <div class="processing-info">
+                                    @if($wallet->method == 'crypto')
+                                        Processing depends on network congestion
+                                    @elseif($wallet->method == 'bank')
+                                        Processed on business days only
+                                    @else
+                                        Funds credited instantly after verification
+                                    @endif
                                 </div>
-                                <div class="bank-item">
-                                    <span class="bank-field">SWIFT Code</span>
-                                    <span class="bank-value">CHASUS33</span>
-                                    <button class="copy-btn" data-address="CHASUS33">
-                                        <i class="fas fa-copy"></i> Copy
+                                <div class="method-actions">
+                                    <button class="btn-details">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
                                     </button>
+                                    {{-- <button class="btn-deposit" data-method="{{ $wallet->method }}">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Make Deposit
+                                    </button> --}}
                                 </div>
                             </div>
                         </div>
-
-                        <div class="deposit-instructions">
-                            <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
-                            <ul class="instructions-list">
-                                <li>
-                                    <div class="step-number">1</div>
-                                    <div>Use exact bank details provided above</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">2</div>
-                                    <div>Include your User ID in transfer description</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">3</div>
-                                    <div>Keep your bank receipt/confirmation</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">4</div>
-                                    <div>Email receipt to payments@topsavertbc.online</div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <ul class="payment-features">
-                            <li><i class="fas fa-check"></i> Direct from your bank account</li>
-                            <li><i class="fas fa-check"></i> $10,000 daily deposit limit</li>
-                            <li><i class="fas fa-check"></i> Full transaction audit trail</li>
-                            <li><i class="fas fa-check"></i> Bank-level security</li>
-                        </ul>
-                    </div>
-                    <div class="payment-method-footer">
-                        <div class="processing-info">
-                            Processed on business days only
-                        </div>
-                        <div class="method-actions">
-                            <button class="btn-details">
-                                <i class="fas fa-info-circle"></i>
-                                Details
-                            </button>
-                            <button class="btn-deposit">
-                                <i class="fas fa-arrow-right"></i>
-                                Make Deposit
-                            </button>
+                    @endif
+                @empty
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <h4>No Payment Methods Available</h4>
+                            <p>Currently there are no active payment methods. Please check back later or contact support.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- PayPal Method -->
-                <div class="payment-method-card">
-                    <div class="payment-method-header">
-                        <div class="payment-method-info">
-                            <div class="payment-icon" style="background: linear-gradient(135deg, #0070BA 0%, #00457C 100%);">
-                                <i class="fab fa-paypal"></i>
-                            </div>
-                            <div class="payment-details">
-                                <h3>PayPal</h3>
-                                <p>Send payments via PayPal</p>
-                            </div>
-                        </div>
-                        <div class="payment-status">
-                            <span class="status-badge status-active">Available</span>
-                        </div>
-                    </div>
-                    <div class="payment-method-body">
-                        <div class="payment-specs">
-                            <div class="spec-item">
-                                <span class="spec-label">Processing Time</span>
-                                <span class="spec-value">24 hours</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Minimum Deposit</span>
-                                <span class="spec-value">$20</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transaction Fee</span>
-                                <span class="spec-value">2.9% (PayPal fee)</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Daily Limit</span>
-                                <span class="spec-value">$5,000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-details-section">
-                            <div class="details-title">
-                                <i class="fas fa-envelope"></i>
-                                Send To This PayPal Email
-                            </div>
-                            <div class="paypal-email">
-                                payments@topsavertbc.online
-                            </div>
-                            <div style="text-align: center; margin-top: 10px;">
-                                <button class="copy-btn" data-address="payments@topsavertbc.online" style="padding: 8px 16px;">
-                                    <i class="fas fa-copy"></i> Copy Email
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="deposit-instructions">
-                            <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
-                            <ul class="instructions-list">
-                                <li>
-                                    <div class="step-number">1</div>
-                                    <div>Send payment to payments@topsavertbc.online</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">2</div>
-                                    <div>Select "Friends & Family" to avoid extra fees</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">3</div>
-                                    <div>Include your User ID in payment note</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">4</div>
-                                    <div>Screenshot transaction for verification</div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <ul class="payment-features">
-                            <li><i class="fas fa-check"></i> Fast 24-hour processing</li>
-                            <li><i class="fas fa-check"></i> $5,000 daily deposit limit</li>
-                            <li><i class="fas fa-check"></i> Worldwide access</li>
-                            <li><i class="fas fa-check"></i> Secure PayPal protection</li>
-                        </ul>
-                    </div>
-                    <div class="payment-method-footer">
-                        <div class="processing-info">
-                            Processed within 24 hours
-                        </div>
-                        <div class="method-actions">
-                            <button class="btn-details">
-                                <i class="fas fa-info-circle"></i>
-                                Details
-                            </button>
-                            <button class="btn-deposit">
-                                <i class="fas fa-arrow-right"></i>
-                                Make Deposit
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
 
             <!-- Information Section -->
@@ -1027,7 +897,7 @@
                         <i class="fas fa-user-circle"></i>
                         <div>
                             <h4>Include Your User ID</h4>
-                            <p>Always include your User ID in the payment description/memo for identification</p>
+                            <p>Always include your User ID ({{ Auth::id() }}) in the payment description/memo for identification</p>
                         </div>
                     </div>
                     <div class="info-tip">
@@ -1065,6 +935,8 @@
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const textToCopy = this.getAttribute('data-address');
+                
+                if (!textToCopy) return;
                 
                 // Use the Clipboard API to copy text
                 navigator.clipboard.writeText(textToCopy).then(() => {
@@ -1104,6 +976,7 @@
         
         depositButtons.forEach(button => {
             button.addEventListener('click', function() {
+                const method = this.getAttribute('data-method');
                 const card = this.closest('.payment-method-card');
                 const methodName = card.querySelector('h3').textContent;
                 
@@ -1114,12 +987,15 @@
                 
                 // Simulate opening deposit form
                 setTimeout(() => {
-                    alert(`Opening ${methodName} deposit form. Please follow the instructions carefully.`);
+                    // In a real application, you would redirect to a deposit form
+                    // For now, we'll show an alert
+                    alert(`Opening ${methodName} deposit form. Please follow the instructions carefully.\n\nYou will need to:\n1. Make payment using the details provided\n2. Include your User ID: {{ Auth::id() }}\n3. Submit proof of payment`);
+                    
                     this.innerHTML = originalText;
                     this.disabled = false;
                     
-                    // In a real application, you would open a deposit form/modal
-                    // or redirect to a deposit page for the selected method
+                    // Redirect to deposit form (uncomment when you have the route)
+                    // window.location.href = `/deposit/${method}`;
                 }, 1000);
             });
         });
@@ -1139,6 +1015,9 @@
                     const value = spec.querySelector('.spec-value').textContent;
                     detailsMessage += `${label}: ${value}\n`;
                 });
+                
+                // Add user ID reminder
+                detailsMessage += `\nRemember to include your User ID: {{ Auth::id() }}`;
                 
                 alert(detailsMessage);
             });
