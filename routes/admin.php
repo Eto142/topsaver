@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\CreditDebitController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\MailController;
+use App\Http\Controllers\Admin\ManageCardController;
 use App\Http\Controllers\Admin\ManageLoanController;
 use App\Http\Controllers\Admin\ManagePaymentController;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\TransferController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -39,6 +41,14 @@ use Illuminate\Support\Facades\Route;
   Route::get('/show', [ManageUserController::class, 'ShowUsers'])->name('show'); // becomes 'admin.user'
   Route::get('/profile/{id}/', [ManageUserController::class, 'userProfile'])->name('profile');
   Route::delete('/delete/{id}', [ManageUserController::class, 'deleteUser'])->name('delete');
+
+
+  //manage card
+    Route::get('user_cards', [ManageCardController::class, 'UsersCards'])->name('cards');
+   
+
+
+
 
       //loan controller
     Route::get('user_loans', [ManageLoanController::class, 'UsersLoans'])->name('loans');

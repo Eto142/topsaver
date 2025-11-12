@@ -321,7 +321,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <img src="{{ asset('assets/img/logo.png') }}" alt="logo" width="">
+            <img src="{{ asset('logo.png') }}" alt="logo" width="">
         </div>
         
         <div class="sidebar-nav">
@@ -363,7 +363,7 @@
                 <span>Loans</span>
             </a>
             
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.cards') }}" class="nav-link">
                 <i class="fas fa-credit-card"></i>
                 <span>Cards</span>
             </a>
