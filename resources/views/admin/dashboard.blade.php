@@ -126,76 +126,66 @@
        
         
          <!-- Recent Users Section -->
-     <table class="table table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                {{-- <th>Status</th> --}}
-                                <th>Joined</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentUsers as $user)
-                            <tr>
-                                <td>#{{ $user->id }}</td>
-                                <td>
-                                    
-</a>
-                                    <div class="d-flex align-items-center">
-                                        
-
-                                             <img 
-    src="{{ $user->display_picture ? Storage::url($user->display_picture) : asset('uploads/display/avatar.jpg') }}" 
-    alt="{{ $user->name ?? 'User Avatar' }}" 
-   class="rounded-circle me-2" width="32" height="32"
->
-
-                                        <div>
-                                            <div class="fw-semibold">{{ $user->first_name }}</div>
-                                            <small class="text-muted">{{ $user->account_type ?? 'Standard' }}</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone ?? 'N/A' }}</td>
-                                {{-- <td>
-                                    @if($user->email_verified_at)
-                                        <span class="badge bg-success">Verified</span>
-                                    @else
-                                        <span class="badge bg-warning">Pending</span>
-                                    @endif
-                                </td> --}}
-                                <td>{{ $user->created_at->format('M j, Y') }}</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('admin.profile', $user->id) }}" class="btn btn-outline-primary" title="View">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="mailto:{{ $user->email }}" class="btn btn-outline-success" title="Send Email">
-                                            <i class="fas fa-envelope"></i>
-                                        </a>
-                                         <form action="{{route('admin.delete', $user->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $user->id }}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-4">No users registered yet</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+    <!-- Recent Users Section -->
+<div class="table-responsive">
+    <table class="table table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Joined</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($recentUsers as $user)
+            <tr>
+                <td>#{{ $user->id }}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img 
+                            src="{{ $user->display_picture ? Storage::url($user->display_picture) : asset('uploads/display/avatar.jpg') }}" 
+                            alt="{{ $user->name ?? 'User Avatar' }}" 
+                            class="rounded-circle me-2" width="32" height="32"
+                        >
+                        <div>
+                            <div class="fw-semibold">{{ $user->first_name }}</div>
+                            <small class="text-muted">{{ $user->account_type ?? 'Standard' }}</small>
+                        </div>
                     </div>
+                </td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->phone ?? 'N/A' }}</td>
+                <td>{{ $user->created_at->format('M j, Y') }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a href="{{ route('admin.profile', $user->id) }}" class="btn btn-outline-primary" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="mailto:{{ $user->email }}" class="btn btn-outline-success" title="Send Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <form action="{{route('admin.delete', $user->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $user->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="7" class="text-center py-4">No users registered yet</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
                 </div>
             </div>
         </div>
