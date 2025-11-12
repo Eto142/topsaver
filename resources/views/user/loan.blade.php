@@ -647,16 +647,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })();
     
-    // Initialize DataTable
-    if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
-        jQuery(function($) {
-            var table = $('#example5').DataTable({
-                searching: false,
-                paging: true,
-                select: false,
-                lengthChange: false
-            });
-        });
-    }
+    // // Initialize DataTable
+    // if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
+    //     jQuery(function($) {
+    //         var table = $('#example5').DataTable({
+    //             searching: false,
+    //             paging: true,
+    //             select: false,
+    //             lengthChange: false
+    //         });
+    //     });
+    // }
 });
 </script>
