@@ -56,6 +56,10 @@ public function creditUser(Request $request)
     $transaction->transaction_description = $request->description ?? "Credit transaction";
     $transaction->transaction_status = 1;
     $transaction->created_at = Carbon::parse($request->date); // custom date too
+
+   // ✅ SAVE SENDER NAME + ACCOUNT IN THE DB
+$transaction->sender_name = $request->sender_name;
+$transaction->sender_account = $request->sender_account;
     $transaction->save();
 
     // ✅ Prepare user data for the credit email
