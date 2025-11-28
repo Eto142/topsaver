@@ -67,7 +67,7 @@
     setTimeout(function() {
       document.querySelector('.spinner').style.display = 'none';
       setTimeout(function() {
-        window.location='../user/alltransactions';
+        window.location='../alltransactions';
       }, 3000);
     }, 3000);
   </script>
