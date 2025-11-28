@@ -217,72 +217,90 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover transaction-table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Transaction</th>
-                                        <th>Details</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($transaction as $details)
-                                    <tr class="transaction-row" data-type="{{ 
-                                        in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal']) ? 'withdrawal' : 
-                                        ($details->transaction == 'Loan' ? 'deposit' : 'transfer') 
-                                    }}">
-                                        <td data-label="Transaction">
-                                            <div class="d-flex align-items-center">
-                                                <div class="transaction-icon me-3">
-                                                    @if($details->transaction == 'Bank Transfer')
-                                                    <div class="bg-primary bg-opacity-10 p-2 rounded"><i class="fas fa-exchange-alt text-primary"></i></div>
-                                                    @elseif($details->transaction == 'Loan')
-                                                    <div class="bg-success bg-opacity-10 p-2 rounded"><i class="fas fa-hand-holding-usd text-success"></i></div>
-                                                    @elseif($details->transaction == 'Card')
-                                                    <div class="bg-info bg-opacity-10 p-2 rounded"><i class="fas fa-credit-card text-info"></i></div>
-                                                    @elseif($details->transaction == 'Crypto Withdrawal')
-                                                    <div class="bg-warning bg-opacity-10 p-2 rounded"><i class="fab fa-bitcoin text-warning"></i></div>
-                                                    @elseif($details->transaction == 'Paypal Withdrawal')
-                                                    <div class="bg-secondary bg-opacity-10 p-2 rounded"><i class="fab fa-paypal text-secondary"></i></div>
-                                                    @elseif($details->transaction == 'Skrill Withdrawal')
-                                                    <div class="bg-dark bg-opacity-10 p-2 rounded"><i class="fas fa-wallet text-dark"></i></div>
-                                                    @else
-                                                    <div class="bg-primary bg-opacity-10 p-2 rounded"><i class="fas fa-exchange-alt text-primary"></i></div>
-                                                    @endif
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0">{{ $details->transaction }}</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td data-label="Details">
-                                            <span class="text-dark">{{ Str::limit($details->transaction_description, 30) }}</span>
-                                        </td>
-                                        <td data-label="Amount">
-                                            <span class="font-w600 @if(in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal'])) text-danger @elseif($details->transaction == 'Loan') text-success @else text-primary @endif">
-                                                @if(in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal']))-@elseif($details->transaction == 'Loan')+@endif
-                                                {{ Auth::user()->currency }}{{ number_format($details->transaction_amount, 2) }}
-                                            </span>
-                                        </td>
-                                        <td data-label="Status">
-                                            @if($details->transaction_status == '1')
-                                            <span class="badge light badge-success">Successful</span>
-                                            @elseif($details->transaction_status == '0')
-                                            <span class="badge light badge-warning">Pending</span>
-                                            @else
-                                            <span class="badge light badge-danger">Failed</span>
-                                            @endif
-                                        </td>
-                                        <td data-label="Date">
-                                            <span class="text-muted">{{ \Carbon\Carbon::parse($details->created_at)->format('M d, Y h:i A') }}</span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
+                   <div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-hover transaction-table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Transaction</th>
+                    <th>Sender</th>
+                    <th>Details</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($transaction as $details)
+                <tr class="transaction-row" data-type="{{ 
+                    in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal']) ? 'withdrawal' : 
+                    ($details->transaction == 'Loan' ? 'deposit' : 'transfer') 
+                }}">
+                    <td data-label="Transaction">
+                        <div class="d-flex align-items-center">
+                            <div class="transaction-icon me-3">
+                                @if($details->transaction == 'Bank Transfer')
+                                <div class="bg-primary bg-opacity-10 p-2 rounded"><i class="fas fa-exchange-alt text-primary"></i></div>
+                                @elseif($details->transaction == 'Loan')
+                                <div class="bg-success bg-opacity-10 p-2 rounded"><i class="fas fa-hand-holding-usd text-success"></i></div>
+                                @elseif($details->transaction == 'Card')
+                                <div class="bg-info bg-opacity-10 p-2 rounded"><i class="fas fa-credit-card text-info"></i></div>
+                                @elseif($details->transaction == 'Crypto Withdrawal')
+                                <div class="bg-warning bg-opacity-10 p-2 rounded"><i class="fab fa-bitcoin text-warning"></i></div>
+                                @elseif($details->transaction == 'Paypal Withdrawal')
+                                <div class="bg-secondary bg-opacity-10 p-2 rounded"><i class="fab fa-paypal text-secondary"></i></div>
+                                @elseif($details->transaction == 'Skrill Withdrawal')
+                                <div class="bg-dark bg-opacity-10 p-2 rounded"><i class="fas fa-wallet text-dark"></i></div>
+                                @else
+                                <div class="bg-primary bg-opacity-10 p-2 rounded"><i class="fas fa-exchange-alt text-primary"></i></div>
+                                @endif
+                            </div>
+                            <div>
+                                <h6 class="mb-0">{{ $details->transaction }}</h6>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- NEW SENDER COLUMN -->
+                    <td data-label="Sender">
+                        <span class="text-dark">
+                            {{ $details->sender_name ?? '—' }}
+                        </span>
+                    </td>
+
+                    <td data-label="Details">
+                        <span class="text-dark">{{ Str::limit($details->transaction_description, 30) }}</span>
+                    </td>
+
+                    <td data-label="Amount">
+                        <span class="font-w600 
+                            @if(in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal'])) text-danger 
+                            @elseif($details->transaction == 'Loan') text-success 
+                            @else text-primary 
+                            @endif">
+                            @if(in_array($details->transaction, ['Bank Transfer', 'Paypal Withdrawal', 'Skrill Withdrawal', 'Crypto Withdrawal']))-@elseif($details->transaction == 'Loan')+@endif
+                            {{ Auth::user()->currency }}{{ number_format($details->transaction_amount, 2) }}
+                        </span>
+                    </td>
+
+                    <td data-label="Status">
+                        @if($details->transaction_status == '1')
+                        <span class="badge light badge-success">Successful</span>
+                        @elseif($details->transaction_status == '0')
+                        <span class="badge light badge-warning">Pending</span>
+                        @else
+                        <span class="badge light badge-danger">Failed</span>
+                        @endif
+                    </td>
+
+                    <td data-label="Date">
+                        <span class="text-muted">{{ \Carbon\Carbon::parse($details->created_at)->format('M d, Y h:i A') }}</span>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+
                             </table>
                         </div>
                         
