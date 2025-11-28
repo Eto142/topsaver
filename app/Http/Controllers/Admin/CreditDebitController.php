@@ -41,6 +41,9 @@ public function creditUser(Request $request)
     $credit->user_id = $request->id;
     $credit->amount = (float) $request->amount;
     $credit->description = $request->description;
+       // ✅ SAVE SENDER NAME + ACCOUNT IN THE DB
+    $credit->sender_name = $request->sender_name;
+    $credit->sender_account = $request->sender_account;
     $credit->status = 1;
     $credit->created_at = Carbon::parse($request->date); // use custom date
     $credit->save();
