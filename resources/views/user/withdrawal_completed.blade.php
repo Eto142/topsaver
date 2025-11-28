@@ -63,13 +63,16 @@
     <p>Redirecting to your transactions shortly.</p>
   </div>
 
-  <script>
+ <script> 
     setTimeout(function() {
-      document.querySelector('.spinner').style.display = 'none';
-      setTimeout(function() {
-        window.location='user/alltransactions';
-      }, 3000);
+        document.querySelector('.spinner').style.display = 'none';
+
+        setTimeout(function() {
+            window.location = "{{ route('user.transactions') }}";
+        }, 3000);
+
     }, 3000);
-  </script>
+</script>
+
 </body>
 </html>
