@@ -795,7 +795,7 @@ window.smartsupp||(function(d) {
                            
                         </a>
         </div>
-        <a href="{{ route('login') }}" class="login-link">
+        <a href="{{ route('user.login') }}" class="login-link">
             <i class="fas fa-sign-in-alt"></i> Sign In
         </a>
     </header>
@@ -1535,7 +1535,7 @@ window.smartsupp||(function(d) {
             </form>
             
             <div class="login-prompt">
-                Already have an account? <a href="{{ route('login') }}">Sign in to your account</a>
+                Already have an account? <a href="{{ route('user.login') }}">Sign in to your account</a>
             </div>
         </div>
     </div>
