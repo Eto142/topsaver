@@ -34,6 +34,11 @@ Route::get('/clear-cache', function () {
     return 'Cache cleared!';
 });
 
+Route::get('/check-login-view', function () {
+    $path = resource_path('views/auth/login.blade.php');
+    return file_exists($path) ? 'File EXISTS at: ' . $path : 'File MISSING at: ' . $path;
+});
+
 Route::get('/', function () {
     return view('home.homepage');
 });
