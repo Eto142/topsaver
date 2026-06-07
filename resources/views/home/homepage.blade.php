@@ -23,7 +23,7 @@
                             <p> Our comprehensive business services are available to help you run your
                                 enterprise smoothly.</p>
                             <div class="hero-btn">
-                                <!--<a href="register.php" class="btn style1">Get Started</a>-->
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="btn style1">Get Started</a>
                                 <a class="play-video">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
@@ -52,7 +52,7 @@
                                 solutions for every banking need to help connect you to a world of
                                 opportunities.</p>
                             <div class="hero-btn">
-                                <a href="{{route('register')}}" class="btn style1">Get Started</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="btn style1">Get Started</a>
                                 <a class="play-video">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
@@ -80,8 +80,7 @@
                             <p> Our comprehensive business services are available to help you run your
                                 enterprise smoothly.</p>
                             <div class="hero-btn">
-                                <a href="{{route('register')}}" class="btn style1">Get
-                                    Started</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="btn style1">Get Started</a>
                                 <a class="play-video">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
@@ -340,7 +339,7 @@
                         <li><i class="ri-check-double-line"></i>No ATM fees. No minimum balance. No overdrafts.
                         </li>
                     </ul>
-                    <a href="{{route('register')}}" class="btn style1">Signup Today</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="btn style1">Signup Today</a>
                 </div>
             </div>
             <div class="col-lg-6 col-12 order-lg-2 order-1">
@@ -539,6 +538,422 @@
     </div>
 </section>
 
+{{-- Register Modal --}}
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;overflow:hidden;">
+            <div class="modal-header" style="background:linear-gradient(to right,#0a5c5c,#0d7a7a);border:none;padding:1rem 1.5rem;">
+                <div>
+                    <h5 class="modal-title" id="registerModalLabel" style="color:#fff;font-weight:700;margin:0;">Open Your Online Banking Account</h5>
+                    <p style="color:rgba(255,255,255,.8);font-size:.85rem;margin:0;">Secure, fast, and convenient banking at your fingertips</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            {{-- Step progress --}}
+            <div style="display:flex;background:#f5f7fa;padding:.75rem 1.5rem;border-bottom:1px solid #e0e6ed;gap:4px;overflow-x:auto;" id="rm-progress">
+                @foreach(['Personal Info','Account Details','Next of Kin','Security','Profile Pic','Review'] as $i => $label)
+                <div class="rm-progress-step" data-step="{{ $i+1 }}" style="display:flex;align-items:center;flex:1;min-width:80px;">
+                    <div class="rm-step-num" style="width:28px;height:28px;border-radius:50%;background:#e0e6ed;color:#6b7280;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;margin-right:6px;flex-shrink:0;transition:all .3s;">{{ $i+1 }}</div>
+                    <span class="rm-step-label" style="font-size:.78rem;font-weight:600;color:#6b7280;transition:all .3s;white-space:nowrap;">{{ $label }}</span>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="modal-body" style="padding:1.5rem;">
+                <div id="rm-alert"></div>
+
+                <form id="rmForm" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Step 1: Personal Info --}}
+                    <div class="rm-step active" id="rm-step-1">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Personal Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="rm-lbl">First Name</label>
+                                <input type="text" name="first_name" class="rm-input" placeholder="First name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Last Name</label>
+                                <input type="text" name="last_name" class="rm-input" placeholder="Last name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Email Address</label>
+                                <input type="email" name="email" class="rm-input" placeholder="Email address" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Phone Number</label>
+                                <input type="number" name="phone" class="rm-input" placeholder="Phone number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Gender</label>
+                                <select name="gender" class="rm-input" required>
+                                    <option value="" disabled selected>Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Date of Birth</label>
+                                <input type="date" name="dob" class="rm-input" max="{{ date('Y-m-d', strtotime('-18 years')) }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">Country of Residence</label>
+                                <select name="country" class="rm-input" required>
+                                    <option value="" disabled selected>Select country</option>
+                                    <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chad</option><option>Chile</option><option>China</option><option>Colombia</option><option>Congo</option><option>Costa Rica</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Fiji</option><option>Finland</option><option>France</option><option>Gabon</option><option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Guinea</option><option>Guyana</option><option>Haiti</option><option>Honduras</option><option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kuwait</option><option>Laos</option><option>Latvia</option><option>Lebanon</option><option>Liberia</option><option>Libya</option><option>Lithuania</option><option>Luxembourg</option><option>Madagascar</option><option>Malawi</option><option>Malaysia</option><option>Mali</option><option>Malta</option><option>Mauritius</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option><option>Namibia</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option><option>North Korea</option><option>Norway</option><option>Oman</option><option>Pakistan</option><option>Palestine</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>Somalia</option><option>South Africa</option><option>South Korea</option><option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Sweden</option><option>Switzerland</option><option>Syria</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Togo</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="rm-actions"><div></div><button type="button" class="rm-btn-primary rm-next" data-next="2">Continue <i class="fas fa-arrow-right"></i></button></div>
+                    </div>
+
+                    {{-- Step 2: Account Details --}}
+                    <div class="rm-step" id="rm-step-2">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Account Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Account Type</label>
+                                <select name="account_type" class="rm-input" required>
+                                    <option value="" disabled selected>Select account type</option>
+                                    <option value="savings">Savings Account</option>
+                                    <option value="joint">Joint Account</option>
+                                    <option value="checking">Checking Account</option>
+                                    <option value="business">Business Account</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Preferred Currency</label>
+                                <select name="currency" class="rm-input" required>
+                                    <option value="$">$ (US Dollar)</option>
+                                    <option value="€">€ (Euro)</option>
+                                    <option value="£">£ (British Pound)</option>
+                                    <option value="¥">¥ (Japanese Yen)</option>
+                                    <option value="₹">₹ (Indian Rupee)</option>
+                                    <option value="A$">A$ (Australian Dollar)</option>
+                                    <option value="C$">C$ (Canadian Dollar)</option>
+                                    <option value="CHF">CHF (Swiss Franc)</option>
+                                    <option value="ZAR">ZAR (South African Rand)</option>
+                                    <option value="₦">₦ (Nigerian Naira)</option>
+                                    <option value="R$">R$ (Brazilian Real)</option>
+                                    <option value="SGD">SGD (Singapore Dollar)</option>
+                                    <option value="₱">₱ (Philippine Peso)</option>
+                                    <option value="kr">kr (Swedish/Norwegian Krone)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">How did you hear about us?</label>
+                                <select name="referral_source" class="rm-input">
+                                    <option value="">Select an option</option>
+                                    <option value="friend">Friend or Family</option>
+                                    <option value="online">Online Search</option>
+                                    <option value="social">Social Media</option>
+                                    <option value="advertisement">Advertisement</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="rm-actions">
+                            <button type="button" class="rm-btn-secondary rm-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="button" class="rm-btn-primary rm-next" data-next="3">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    {{-- Step 3: Next of Kin --}}
+                    <div class="rm-step" id="rm-step-3">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Next of Kin</h5>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="rm-lbl">Full Name</label>
+                                <input type="text" name="kin_full_name" class="rm-input" placeholder="Next of kin's full name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Relationship</label>
+                                <select name="kin_relationship" class="rm-input" required>
+                                    <option value="" disabled selected>Select relationship</option>
+                                    <option value="spouse">Spouse</option>
+                                    <option value="parent">Parent</option>
+                                    <option value="child">Child</option>
+                                    <option value="sibling">Sibling</option>
+                                    <option value="other_relative">Other Relative</option>
+                                    <option value="friend">Friend</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="rm-lbl">Phone Number</label>
+                                <input type="tel" name="kin_phone" class="rm-input" placeholder="Phone number" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">Email Address <small style="font-weight:400;color:#6b7280;">(optional)</small></label>
+                                <input type="email" name="kin_email" class="rm-input" placeholder="Email address">
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">Residential Address</label>
+                                <textarea name="kin_address" class="rm-input" rows="3" placeholder="Full residential address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="rm-actions">
+                            <button type="button" class="rm-btn-secondary rm-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="button" class="rm-btn-primary rm-next" data-next="4">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    {{-- Step 4: Security --}}
+                    <div class="rm-step" id="rm-step-4">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Security Setup</h5>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="rm-lbl">Password</label>
+                                <div style="position:relative;">
+                                    <input type="password" name="password" id="rm-password" class="rm-input" placeholder="Minimum 8 characters" autocomplete="new-password" required>
+                                    <button type="button" class="rm-pwd-toggle" data-target="rm-password"><i class="far fa-eye"></i></button>
+                                </div>
+                                <div id="rm-pwd-strength" style="height:4px;background:#e0e6ed;border-radius:2px;margin-top:6px;overflow:hidden;"><div id="rm-pwd-bar" style="height:100%;width:0;transition:width .3s,background .3s;border-radius:2px;"></div></div>
+                                <div id="rm-pwd-text" style="font-size:.75rem;text-align:right;margin-top:3px;color:#6b7280;"></div>
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">Confirm Password</label>
+                                <div style="position:relative;">
+                                    <input type="password" name="password_confirmation" id="rm-password-confirm" class="rm-input" placeholder="Re-enter password" required>
+                                    <button type="button" class="rm-pwd-toggle" data-target="rm-password-confirm"><i class="far fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="rm-lbl">Transaction PIN <small style="font-weight:400;color:#6b7280;">(4–6 digits)</small></label>
+                                <div style="position:relative;">
+                                    <input type="password" name="transaction_pin" id="rm-pin" class="rm-input" placeholder="4–6 digit PIN" maxlength="6" pattern="[0-9]{4,6}" required autocomplete="off">
+                                    <button type="button" class="rm-pwd-toggle" data-target="rm-pin"><i class="far fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;padding:.9rem;background:#f5f7fa;border-radius:8px;border-left:4px solid #ff6b35;font-size:.8rem;">
+                            <p style="font-weight:700;color:#0a5c5c;margin:0 0 .3rem;"><i class="fas fa-shield-alt" style="color:#ff6b35;margin-right:5px;"></i>Security Tips</p>
+                            <ul style="padding-left:1.2rem;margin:0;"><li>Never share your password or PIN</li><li>Use uppercase, lowercase, numbers and symbols</li><li>We will never ask for your password by email or phone</li></ul>
+                        </div>
+                        <div class="rm-actions">
+                            <button type="button" class="rm-btn-secondary rm-prev" data-prev="3"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="button" class="rm-btn-primary rm-next" data-next="5">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    {{-- Step 5: Profile Picture --}}
+                    <div class="rm-step" id="rm-step-5">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Profile Picture</h5>
+                        <div style="text-align:center;padding:1.5rem;border:2px dashed #e0e6ed;border-radius:10px;background:#f5f7fa;">
+                            <div id="rm-preview-wrap" style="margin-bottom:1rem;">
+                                <div id="rm-preview-placeholder" style="width:120px;height:120px;border-radius:50%;background:#e0e6ed;display:flex;align-items:center;justify-content:center;margin:0 auto;"><i class="fas fa-user" style="font-size:3rem;color:#6b7280;"></i></div>
+                                <img id="rm-preview-img" style="width:120px;height:120px;border-radius:50%;border:3px solid #0a5c5c;object-fit:cover;display:none;margin:0 auto;">
+                            </div>
+                            <label for="rm-display-picture" style="display:inline-block;padding:.65rem 1.25rem;background:#0a5c5c;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;">
+                                <i class="fas fa-cloud-upload-alt"></i> Choose File
+                            </label>
+                            <input type="file" name="display_picture" id="rm-display-picture" accept="image/*" style="display:none;">
+                            <p id="rm-file-name" style="margin:.75rem 0 0;font-size:.85rem;color:#6b7280;">No file chosen</p>
+                            <p style="font-size:.78rem;color:#6b7280;margin:.25rem 0 0;">JPG, PNG, GIF — max 2MB — optional</p>
+                        </div>
+                        <div class="rm-actions">
+                            <button type="button" class="rm-btn-secondary rm-prev" data-prev="4"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="button" class="rm-btn-primary rm-next" data-next="6">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    {{-- Step 6: Review & Submit --}}
+                    <div class="rm-step" id="rm-step-6">
+                        <h5 style="color:#0a5c5c;font-weight:700;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:3px solid #ff6b35;display:inline-block;">Review & Submit</h5>
+                        <div style="background:#f5f7fa;border-radius:10px;padding:1.25rem;margin-bottom:1rem;">
+                            <p style="font-weight:700;color:#0a5c5c;margin-bottom:.75rem;">Personal Information</p>
+                            <div class="row g-2" style="font-size:.9rem;">
+                                <div class="col-6"><span style="color:#6b7280;">Name:</span> <span id="rv-name" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Email:</span> <span id="rv-email" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Phone:</span> <span id="rv-phone" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">DOB:</span> <span id="rv-dob" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Country:</span> <span id="rv-country" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Gender:</span> <span id="rv-gender" style="font-weight:600;"></span></div>
+                            </div>
+                            <p style="font-weight:700;color:#0a5c5c;margin:1rem 0 .75rem;">Account Details</p>
+                            <div class="row g-2" style="font-size:.9rem;">
+                                <div class="col-6"><span style="color:#6b7280;">Account Type:</span> <span id="rv-account-type" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Currency:</span> <span id="rv-currency" style="font-weight:600;"></span></div>
+                            </div>
+                            <p style="font-weight:700;color:#0a5c5c;margin:1rem 0 .75rem;">Next of Kin</p>
+                            <div class="row g-2" style="font-size:.9rem;">
+                                <div class="col-6"><span style="color:#6b7280;">Name:</span> <span id="rv-kin-name" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Relationship:</span> <span id="rv-kin-rel" style="font-weight:600;"></span></div>
+                                <div class="col-6"><span style="color:#6b7280;">Phone:</span> <span id="rv-kin-phone" style="font-weight:600;"></span></div>
+                            </div>
+                        </div>
+                        <div style="max-height:150px;overflow-y:auto;padding:1rem;border:1px solid #e0e6ed;border-radius:8px;background:#f5f7fa;font-size:.82rem;margin-bottom:1rem;">
+                            <p style="font-weight:700;color:#0a5c5c;margin-bottom:.5rem;">Terms and Conditions</p>
+                            <p>By submitting this application, you agree to the Topsavers Trust Bank Online Banking Agreement, Privacy Policy, and authorize us to verify the information provided. Accounts are subject to approval.</p>
+                        </div>
+                        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:1rem;">
+                            <input type="checkbox" id="rm-terms" name="terms_agree" required style="margin-top:3px;accent-color:#0a5c5c;">
+                            <label for="rm-terms" style="font-size:.88rem;cursor:pointer;">I have read and agree to the <strong>Terms and Conditions</strong> and <strong>Privacy Policy</strong></label>
+                        </div>
+                        <div class="rm-actions">
+                            <button type="button" class="rm-btn-secondary rm-prev" data-prev="5"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="submit" id="rm-submit-btn" class="rm-btn-primary"><i class="fas fa-check-circle"></i> Submit Application</button>
+                        </div>
+                    </div>
+                </form>
+
+                <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:#6b7280;">
+                    Already have an account?
+                    <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal" style="color:#0a5c5c;font-weight:600;">Sign in here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.rm-step { display:none; }
+.rm-step.active { display:block; }
+.rm-lbl { display:block; font-weight:600; color:#063e3e; font-size:.88rem; margin-bottom:.35rem; }
+.rm-input { width:100%; padding:.75rem 1rem; border:1px solid #e0e6ed; border-radius:8px; font-size:.95rem; box-sizing:border-box; transition:border-color .3s; background:#fff; }
+.rm-input:focus { border-color:#0a5c5c; outline:none; box-shadow:0 0 0 3px rgba(10,92,92,.1); }
+.rm-input[type="textarea"], textarea.rm-input { resize:vertical; }
+.rm-actions { display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e0e6ed; }
+.rm-btn-primary { padding:.7rem 1.4rem; background:linear-gradient(to right,#0a5c5c,#0d7a7a); color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:transform .2s,box-shadow .2s; }
+.rm-btn-primary:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(10,92,92,.3); }
+.rm-btn-secondary { padding:.7rem 1.4rem; background:#f5f7fa; color:#333; border:1px solid #e0e6ed; border-radius:8px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+.rm-btn-secondary:hover { background:#e0e6ed; }
+.rm-pwd-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#6b7280; cursor:pointer; font-size:.95rem; }
+.rm-step-num.active-num { background:#0a5c5c !important; color:#fff !important; }
+.rm-step-label.active-lbl { color:#0a5c5c !important; }
+.rm-step-num.done-num { background:#28a745 !important; color:#fff !important; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const rmModal = document.getElementById('registerModal');
+
+    // Step navigation
+    rmModal.querySelectorAll('.rm-next').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const currentStep = this.closest('.rm-step');
+            const next = this.dataset.next;
+            const required = currentStep.querySelectorAll('[required]');
+            let valid = true;
+            required.forEach(el => {
+                el.style.borderColor = '';
+                if (!el.value.trim()) { valid = false; el.style.borderColor = '#ef4444'; el.focus(); }
+            });
+            if (!valid) return;
+            currentStep.classList.remove('active');
+            document.getElementById('rm-step-' + next).classList.add('active');
+            rmUpdateProgress(parseInt(next));
+            if (next === '6') rmPopulateReview();
+            rmModal.querySelector('.modal-body').scrollTop = 0;
+        });
+    });
+
+    rmModal.querySelectorAll('.rm-prev').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const currentStep = this.closest('.rm-step');
+            const prev = this.dataset.prev;
+            currentStep.classList.remove('active');
+            document.getElementById('rm-step-' + prev).classList.add('active');
+            rmUpdateProgress(parseInt(prev));
+            rmModal.querySelector('.modal-body').scrollTop = 0;
+        });
+    });
+
+    // Progress indicator
+    function rmUpdateProgress(activeStep) {
+        rmModal.querySelectorAll('.rm-progress-step').forEach(step => {
+            const n = parseInt(step.dataset.step);
+            const num = step.querySelector('.rm-step-num');
+            const lbl = step.querySelector('.rm-step-label');
+            num.classList.remove('active-num', 'done-num');
+            lbl.classList.remove('active-lbl');
+            if (n === activeStep) { num.classList.add('active-num'); lbl.classList.add('active-lbl'); }
+            else if (n < activeStep) { num.classList.add('done-num'); lbl.style.color = '#28a745'; }
+            else { lbl.style.color = ''; }
+        });
+    }
+    rmUpdateProgress(1);
+
+    // Password toggle
+    rmModal.querySelectorAll('.rm-pwd-toggle').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const input = document.getElementById(this.dataset.target);
+            const icon = this.querySelector('i');
+            if (input.type === 'password') { input.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+            else { input.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+        });
+    });
+
+    // Password strength
+    const pwdInput = document.getElementById('rm-password');
+    if (pwdInput) {
+        pwdInput.addEventListener('input', function () {
+            const v = this.value;
+            const bar = document.getElementById('rm-pwd-bar');
+            const txt = document.getElementById('rm-pwd-text');
+            let strength = 0;
+            if (v.length >= 8) strength++;
+            if (/[A-Z]/.test(v)) strength++;
+            if (/[0-9]/.test(v)) strength++;
+            if (/[^A-Za-z0-9]/.test(v)) strength++;
+            const levels = [['0%','',''], ['25%','#ef4444','Weak'], ['50%','#ffc107','Medium'], ['75%','#17a2b8','Good'], ['100%','#28a745','Strong']];
+            bar.style.width = levels[strength][0]; bar.style.background = levels[strength][1];
+            txt.textContent = strength ? 'Strength: ' + levels[strength][2] : '';
+            txt.style.color = levels[strength][1];
+        });
+    }
+
+    // Profile picture preview
+    const picInput = document.getElementById('rm-display-picture');
+    if (picInput) {
+        picInput.addEventListener('change', function () {
+            const file = this.files[0];
+            document.getElementById('rm-file-name').textContent = file ? file.name : 'No file chosen';
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('rm-preview-placeholder').style.display = 'none';
+                    const img = document.getElementById('rm-preview-img');
+                    img.src = e.target.result; img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Populate review
+    function rmPopulateReview() {
+        const f = document.getElementById('rmForm');
+        const g = name => f.querySelector('[name="' + name + '"]')?.value || '-';
+        document.getElementById('rv-name').textContent = g('first_name') + ' ' + g('last_name');
+        document.getElementById('rv-email').textContent = g('email');
+        document.getElementById('rv-phone').textContent = g('phone');
+        document.getElementById('rv-dob').textContent = g('dob');
+        document.getElementById('rv-country').textContent = g('country');
+        document.getElementById('rv-gender').textContent = g('gender');
+        document.getElementById('rv-account-type').textContent = g('account_type');
+        document.getElementById('rv-currency').textContent = g('currency');
+        document.getElementById('rv-kin-name').textContent = g('kin_full_name');
+        document.getElementById('rv-kin-rel').textContent = g('kin_relationship');
+        document.getElementById('rv-kin-phone').textContent = g('kin_phone');
+    }
+
+    // Reset on modal close
+    rmModal.addEventListener('hidden.bs.modal', function () {
+        document.querySelectorAll('.rm-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('rm-step-1').classList.add('active');
+        rmUpdateProgress(1);
+        document.getElementById('rmForm').reset();
+        document.getElementById('rm-preview-placeholder').style.display = 'flex';
+        document.getElementById('rm-preview-img').style.display = 'none';
+        document.getElementById('rm-file-name').textContent = 'No file chosen';
+        document.getElementById('rm-alert').innerHTML = '';
+    });
+});
+</script>
+
 {{-- Login Modal --}}
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -605,7 +1020,7 @@
 
                     <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:#6b7280;">
                         Not registered yet?
-                        <a href="{{ route('register') }}" style="color:#0a5c5c;font-weight:600;">Enroll here</a>
+                        <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal" style="color:#0a5c5c;font-weight:600;">Enroll here</a>
                     </p>
                 </form>
 
