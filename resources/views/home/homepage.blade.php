@@ -25,7 +25,7 @@
                             <div class="hero-btn">
                                 <!--<a href="register.php" class="btn style1">Get Started</a>-->
                                 <a class="play-video">
-                                    <a href="{{route('login')}}" class="btn style1">Login</a>
+                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             <div class="hero-btn">
                                 <a href="{{route('register')}}" class="btn style1">Get Started</a>
                                 <a class="play-video">
-                                    <a href="{{route('login')}}" class="btn style1">Login</a>
+                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                 <a href="{{route('register')}}" class="btn style1">Get
                                     Started</a>
                                 <a class="play-video">
-                                    <a href="{{route('login')}}" class="btn style1">Login</a>
+                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>

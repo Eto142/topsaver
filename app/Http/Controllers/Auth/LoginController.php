@@ -14,10 +14,17 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    // public function showLoginForm()
+    // {
+    //     return view('home.yo');
+    // }
+
+
+    public function showLogForm()
     {
         return view('home.yo');
     }
+
 
 //  public function login(Request $request)
 // {
