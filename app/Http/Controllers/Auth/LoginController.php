@@ -14,10 +14,10 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    // public function showLoginForm()
-    // {
-    //     return view('home.yo');
-    // }
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
 
 
     public function showLogForm()
