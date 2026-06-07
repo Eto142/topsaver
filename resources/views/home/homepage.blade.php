@@ -25,7 +25,7 @@
                             <div class="hero-btn">
                                 <!--<a href="register.php" class="btn style1">Get Started</a>-->
                                 <a class="play-video">
-                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             <div class="hero-btn">
                                 <a href="{{route('register')}}" class="btn style1">Get Started</a>
                                 <a class="play-video">
-                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                 <a href="{{route('register')}}" class="btn style1">Get
                                     Started</a>
                                 <a class="play-video">
-                                    <a href="{{route('user.login')}}" class="btn style1">Login</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn style1">Login</a>
                                     <span class="sm-none"></span>
                             </div>
                         </div>
@@ -538,5 +538,171 @@
         </div>
     </div>
 </section>
+
+{{-- Login Modal --}}
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;overflow:hidden;">
+            <div class="modal-header" style="background:linear-gradient(to right,#0a5c5c,#0d7a7a);border:none;padding:1.25rem 1.5rem;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <i class="flaticon-bank" style="font-size:1.5rem;color:#fff;"></i>
+                    <h5 class="modal-title" id="loginModalLabel" style="color:#fff;font-weight:700;margin:0;">Secure Login</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding:2rem;">
+                <p style="color:#6b7280;font-size:0.9rem;margin-bottom:1.5rem;text-align:center;">Access your Topsavers Trust Bank account</p>
+
+                <div id="modal-alert-area"></div>
+
+                <form id="modalLoginForm">
+                    @csrf
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                    <div class="mb-3">
+                        <label for="modal-email" style="font-weight:600;color:#063e3e;font-size:0.9rem;display:block;margin-bottom:0.4rem;">Online ID (Email / Phone Number)</label>
+                        <input type="text" id="modal-email" name="email" required
+                            placeholder="Enter your email or phone"
+                            autocomplete="username"
+                            style="width:100%;padding:0.8rem 1rem;border:1px solid #e0e6ed;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color .3s;"
+                            onfocus="this.style.borderColor='#0a5c5c';this.style.boxShadow='0 0 0 3px rgba(10,92,92,.1)'"
+                            onblur="this.style.borderColor='#e0e6ed';this.style.boxShadow='none'">
+                        <div id="modal-error-email" style="color:#ef4444;font-size:0.8rem;margin-top:0.3rem;min-height:1rem;"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modal-password" style="font-weight:600;color:#063e3e;font-size:0.9rem;display:block;margin-bottom:0.4rem;">Password</label>
+                        <div style="position:relative;">
+                            <input type="password" id="modal-password" name="password" required
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                style="width:100%;padding:0.8rem 2.8rem 0.8rem 1rem;border:1px solid #e0e6ed;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color .3s;"
+                                onfocus="this.style.borderColor='#0a5c5c';this.style.boxShadow='0 0 0 3px rgba(10,92,92,.1)'"
+                                onblur="this.style.borderColor='#e0e6ed';this.style.boxShadow='none'">
+                            <button type="button" id="modal-toggle-pwd"
+                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;font-size:1rem;">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                        <div id="modal-error-password" style="color:#ef4444;font-size:0.8rem;margin-top:0.3rem;min-height:1rem;"></div>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                        <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#6b7280;cursor:pointer;">
+                            <input type="checkbox" id="modal-remember" name="remember" style="accent-color:#0a5c5c;">
+                            Remember me
+                        </label>
+                        <a href="/forgot-password" style="color:#0a5c5c;font-weight:600;font-size:0.85rem;text-decoration:none;">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" id="modal-login-btn"
+                        style="width:100%;padding:0.85rem;background:linear-gradient(to right,#0a5c5c,#0d7a7a);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s,box-shadow .2s;"
+                        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(10,92,92,.3)'"
+                        onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+                        <span id="modal-spinner" style="display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:modalSpin 1s linear infinite;"></span>
+                        <i class="fas fa-lock"></i> Sign In
+                    </button>
+
+                    <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:#6b7280;">
+                        Not registered yet?
+                        <a href="{{ route('register') }}" style="color:#0a5c5c;font-weight:600;">Enroll here</a>
+                    </p>
+                </form>
+
+                <div style="margin-top:1rem;padding:0.9rem;background:#f5f7fa;border-radius:10px;border-left:4px solid #ff6b35;font-size:0.8rem;">
+                    <p style="font-weight:700;color:#0a5c5c;margin:0 0 0.4rem;"><i class="fas fa-shield-alt" style="color:#ff6b35;margin-right:5px;"></i> Security Tips</p>
+                    <ul style="padding-left:1.2rem;margin:0;">
+                        <li>Never share your credentials</li>
+                        <li>Log out after each session</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes modalSpin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('modalLoginForm');
+    const alertArea = document.getElementById('modal-alert-area');
+    const loginBtn = document.getElementById('modal-login-btn');
+    const spinner = document.getElementById('modal-spinner');
+
+    // Remember me pre-fill
+    if (localStorage.getItem('rememberedEmail')) {
+        document.getElementById('modal-email').value = localStorage.getItem('rememberedEmail');
+        document.getElementById('modal-remember').checked = true;
+    }
+
+    // Password toggle
+    document.getElementById('modal-toggle-pwd').addEventListener('click', function () {
+        const pwd = document.getElementById('modal-password');
+        const icon = this.querySelector('i');
+        if (pwd.type === 'password') {
+            pwd.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            pwd.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        loginBtn.disabled = true;
+        spinner.style.display = 'inline-block';
+        document.getElementById('modal-error-email').textContent = '';
+        document.getElementById('modal-error-password').textContent = '';
+        alertArea.innerHTML = '';
+
+        fetch("{{ route('login') }}", {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+            body: new FormData(form)
+        })
+        .then(r => { if (!r.ok) throw r; return r.json(); })
+        .then(data => {
+            if (data.success) {
+                if (document.getElementById('modal-remember').checked) {
+                    localStorage.setItem('rememberedEmail', document.getElementById('modal-email').value);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                }
+                alertArea.innerHTML = `<div style="padding:.75rem;border-radius:8px;background:#d1fae5;color:#065f46;border:1px solid #a7f3d0;font-size:.9rem;margin-bottom:.75rem;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>${data.message}</div>`;
+                setTimeout(() => { window.location.href = data.redirect; }, 1000);
+            } else {
+                alertArea.innerHTML = `<div style="padding:.75rem;border-radius:8px;background:#fee2e2;color:#991b1b;border:1px solid #fecaca;font-size:.9rem;margin-bottom:.75rem;"><i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>${data.message}</div>`;
+                if (data.errors) {
+                    if (data.errors.email) document.getElementById('modal-error-email').textContent = data.errors.email[0];
+                    if (data.errors.password) document.getElementById('modal-error-password').textContent = data.errors.password[0];
+                }
+            }
+        })
+        .catch(async err => {
+            let msg = 'An unexpected error occurred. Please try again.';
+            try { const d = await err.json(); if (d.message) msg = d.message; } catch (e) {}
+            alertArea.innerHTML = `<div style="padding:.75rem;border-radius:8px;background:#fee2e2;color:#991b1b;border:1px solid #fecaca;font-size:.9rem;margin-bottom:.75rem;"><i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>${msg}</div>`;
+        })
+        .finally(() => {
+            loginBtn.disabled = false;
+            spinner.style.display = 'none';
+        });
+    });
+
+    // Clear errors when modal is hidden
+    document.getElementById('loginModal').addEventListener('hidden.bs.modal', function () {
+        form.reset();
+        alertArea.innerHTML = '';
+        document.getElementById('modal-error-email').textContent = '';
+        document.getElementById('modal-error-password').textContent = '';
+    });
+});
+</script>
 
 @include('home.footer')

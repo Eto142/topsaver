@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="home/asset/css/fancybox.css">
     <link rel="stylesheet" href="home/asset/css/aos.css">
     <link rel="stylesheet" href="home/asset/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="home/asset/css/dark-theme.css">
     <link rel="stylesheet" href="home/asset/css/responsive.css">
     <title>Topsavers Trust Bank - Money Transfer & Banking</title>
