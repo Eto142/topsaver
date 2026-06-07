@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     public function showLogForm()
     {
-        return view('home.yo');
+        return view('home.terms');
     }
 
 
