@@ -12,6 +12,7 @@ use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\TransferController;
 use App\Http\Controllers\User\WithdrawalController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,13 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+Route::get('/clear-cache', function () {
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    return 'Cache cleared!';
+});
 
 Route::get('/', function () {
     return view('home.homepage');
